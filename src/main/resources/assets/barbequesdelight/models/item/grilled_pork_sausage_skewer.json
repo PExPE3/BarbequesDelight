@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "barbequesdelight:item/grilled_pork_sausage_skewer"
+  }
+}

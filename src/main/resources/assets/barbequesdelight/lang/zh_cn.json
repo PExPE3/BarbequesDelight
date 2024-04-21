@@ -1,0 +1,33 @@
+{
+  "itemGroup.barbequesdelight.main": "烧烤乐事",
+
+  "item.barbequesdelight.chilli_powder": "辣椒粉",
+  "item.barbequesdelight.cumin_powder": "孜然粉",
+  "item.barbequesdelight.pepper_powder": "胡椒粉",
+
+  "item.barbequesdelight.burnt_food": "烧焦的食物",
+  "item.barbequesdelight.kebab_wrap": "烧烤卷饼",
+  "item.barbequesdelight.kebab_sandwich": "烧烤三明治",
+
+  "item.barbequesdelight.cod_skewer": "生鳕鱼肉串",
+  "item.barbequesdelight.cooked_cod_skewer": "熟鳕鱼肉串",
+  "item.barbequesdelight.salmon_skewer": "生鲑鱼肉串",
+  "item.barbequesdelight.cooked_salmon_skewer": "熟鲑鱼肉串",
+  "item.barbequesdelight.chicken_skewer": "生鸡肉串",
+  "item.barbequesdelight.cooked_chicken_skewer": "熟鸡肉串",
+  "item.barbequesdelight.lamb_skewer": "生羊肉串",
+  "item.barbequesdelight.cooked_lamb_skewer": "熟羊肉串",
+  "item.barbequesdelight.rabbit_skewer": "生兔肉串",
+  "item.barbequesdelight.cooked_rabbit_skewer": "熟兔肉串",
+  "item.barbequesdelight.pork_sausage_skewer": "猪肉香肠串",
+  "item.barbequesdelight.grilled_pork_sausage_skewer": "烤猪肉香肠",
+  "item.barbequesdelight.baked_potato_skewer": "烤土豆串",
+  "item.barbequesdelight.potato_skewer": "土豆串",
+
+  "item.barbequesdelight.chilli_powder.tooltip": "它会使你的烤串又辣又可口!",
+  "item.barbequesdelight.pepper_powder.tooltip": "它会使你的烤串更有美味!",
+  "item.barbequesdelight.cumin_powder.tooltip": "它会使你的烤串治愈你!",
+
+  "block.barbequesdelight.grill": "烧烤架",
+  "block.barbequesdelight.ingredients_basin": "配料盆"
+}

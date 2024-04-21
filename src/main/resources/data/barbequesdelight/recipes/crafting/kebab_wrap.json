@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:foods/breads"
+    },
+    {
+      "tag": "barbequesdelight:skewers"
+    }
+  ],
+  "result": {
+    "item": "barbequesdelight:kebab_wrap"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "itemGroup.barbequesdelight.main": "Barbeques Delight",
+
+  "item.barbequesdelight.chilli_powder": "Chilli Powder",
+  "item.barbequesdelight.cumin_powder": "Cumin Powder",
+  "item.barbequesdelight.pepper_powder": "Pepper Powder",
+
+  "item.barbequesdelight.burnt_food": "Burnt Food",
+  "item.barbequesdelight.kebab_wrap": "Kebab Wrap",
+  "item.barbequesdelight.kebab_sandwich": "Kebab Sandwich",
+
+  "item.barbequesdelight.cod_skewer": "Raw Cod Skewer",
+  "item.barbequesdelight.cooked_cod_skewer": "Cooked Cod Skewer",
+  "item.barbequesdelight.salmon_skewer": "Raw Salmon Skewer",
+  "item.barbequesdelight.cooked_salmon_skewer": "Cooked Salmon Skewer",
+  "item.barbequesdelight.chicken_skewer": "Raw Chicken Skewer",
+  "item.barbequesdelight.cooked_chicken_skewer": "Cooked Chicken Skewer",
+  "item.barbequesdelight.lamb_skewer": "Raw Lamb Skewer",
+  "item.barbequesdelight.cooked_lamb_skewer": "Cooked Lamb Skewer",
+  "item.barbequesdelight.rabbit_skewer": "Raw Rabbit Skewer",
+  "item.barbequesdelight.cooked_rabbit_skewer": "Cooked Rabbit Skewer",
+  "item.barbequesdelight.grilled_pork_sausage_skewer": "Grilled Pork Sausage Skewer",
+  "item.barbequesdelight.pork_sausage_skewer": "Pork Sausage Skewer",
+  "item.barbequesdelight.baked_potato_skewer": "Baked Potato Skewer",
+  "item.barbequesdelight.potato_skewer": "Potato Skewer",
+
+  "item.barbequesdelight.chilli_powder.tooltip": "It will make your skewers spicy and tasty!",
+  "item.barbequesdelight.pepper_powder.tooltip": "It will make your skewers more delicious!",
+  "item.barbequesdelight.cumin_powder.tooltip": "It will make your skewers will cure you!",
+
+  "block.barbequesdelight.grill": "Grill",
+  "block.barbequesdelight.ingredients_basin": "Ingredients Basin"
+}

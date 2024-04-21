@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "XSX",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "barbequesdelight:burnt_food"
+    },
+    "S": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "minecraft:gunpowder",
+    "count": 4
+  }
+}
