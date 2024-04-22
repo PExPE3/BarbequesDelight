@@ -1,130 +1,215 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+    }
+    dependencies {
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+        classpath 'org.parchmentmc:librarian:1.+'
+    }
+}
+
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
-    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs += [
-                    'src/main/generated'
-            ]
-        }
-    }
-}
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-loom {
+version = "${ll_version}"
+group = "dev.kxmc.${modid}"
+archivesBaseName = "${modid}"
 
-    // ... (Whatever exists here)
+if (lljij.toBoolean()) jarJar.enable()
 
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    //mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.19.4'
+    mappings channel: 'official', version: "${minecraft_version}"
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
-        // This adds a new gradle task that runs the datagen API: "gradlew runDatagen"
-        datagen {
-            inherit server
-            name "Data Generation"
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=${modid}"
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            mods {
+                "${modid}" {
+                    source sourceSets.main
+                }
+            }
+        }
 
-            runDir "build/datagen"
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            mods {
+                "${modid}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', "${modid}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                "${modid}" {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
 
-version = project.mod_version
-group = project.maven_group
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-base {
-    archivesName = project.archives_base_name
+mixin {
+    add sourceSets.main, "${modid}.refmap.json"
+    config "${modid}.mixins.json"
 }
 
-repositories {
-    maven {
-        name = "Greenhouse Maven"
-        url = 'https://maven.greenhouseteam.dev/releases/'
-    }
-    maven { url = "https://mvn.devos.one/releases/" } // Porting Lib
-    maven {
-        url "https://maven.jamieswhiteshirt.com/libs-release" // Reach Entity Attributes (Required by Porting Lib)
-        content {
-            includeGroup "com.jamieswhiteshirt"
-        }
-    }
-    maven {
-        url "https://maven.shedaniel.me/"
-    }
-}
-
-dependencies {
-    // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation("vectorwing:FarmersDelight:${fdrf_version}") {
-        exclude(group: "net.fabricmc")
-    }
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
-}
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "loader_version", project.loader_version
-    filteringCharset "UTF-8"
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
-    }
-}
-
-def targetJavaVersion = 17
-tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
-    it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release.set(targetJavaVersion)
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "${modid}",
+                "Specification-Vendor"    : "xkmc",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "xkmc",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'MixinConfigs'            : "${modid}.mixins.json"
+        ])
     }
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
-    }
-}
+jar.finalizedBy('reobfJar')
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            artifact jar
         }
     }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+if (lljij.toBoolean()) {
+
+    reobf {
+        jarJar {}
+    }
+
+    tasks.jarJar.finalizedBy('reobfJarJar')
+
+    tasks.jarJar.configure {
+        archiveClassifier.set('')
+    }
+
+    jar {
+        archiveClassifier.set('slim')
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
+    if (rootMod.toBoolean()) {
+        implementation(jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")) {
+            transitive = false
+            jarJar.ranged(it, "[${mixin_extras_version},)")
+        }
+    } else {
+        implementation("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")
+    }
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    if (rootMod.toBoolean()) {
+        jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20,MC1.21)")
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    maven { url 'https://jitpack.io' }
+    maven {
+        // Location of the maven that hosts JEI files (and TiC)
+        name 'Progwml6 maven'
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
+    maven { // Registrate
+        url "https://maven.tterrag.com/"
+    }
+    maven {
+        // Location of the maven for vazkii's mods
+        name 'blamejared'
+        url 'https://maven.blamejared.com'
+    }
+    maven {
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
+}
+
+dependencies {
+
+    implementation fg.deobf(jarJar("dev.xkmc.l2library:l2library:2.4.25-slim")) {
+        transitive = false
+        jarJar.ranged(it, "[2.4.25,)")
+    }
+
+    implementation fg.deobf(jarJar("dev.xkmc.l2serial:l2serial:1.2.2")) {
+        transitive = false
+        jarJar.ranged(it, "[1.2.2,)")
+    }
+
+    implementation fg.deobf(jarJar("dev.xkmc.l2modularblock:l2modularblock:1.1.0")) {
+        transitive = false
+        jarJar.ranged(it, "[1.1.0,)")
+    }
+
+    implementation fg.deobf("curse.maven:farmers-delight-398521:4638874")
+
+    implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+
+    runtimeOnly fg.deobf("curse.maven:bookshelf-228525:4581675")
+    runtimeOnly fg.deobf("curse.maven:create-328085:4762216")
+    runtimeOnly fg.deobf("curse.maven:enchantment-descriptions-250419:4587429")
+    runtimeOnly fg.deobf("curse.maven:appleskin-248787:4605078")
+
+    implementation fg.deobf("curse.maven:ends-delight-662675:4643639")
+    implementation fg.deobf("curse.maven:nethers-delight-496394:4736227")
+    implementation fg.deobf("curse.maven:oceans-delight-841262:4652060")
+
+    compileOnly fg.deobf("curse.maven:diet-443570:4634780")
+
 }
