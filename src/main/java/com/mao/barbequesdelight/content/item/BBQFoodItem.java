@@ -17,6 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.Configuration;
+import vectorwing.farmersdelight.common.registry.ModEffects;
 
 import java.util.List;
 
@@ -79,7 +80,8 @@ public class BBQFoodItem extends Item {
 	@Override
 	public Component getName(ItemStack stack) {
 		BBQSeasoning seasoning = getSeasoning(stack);
-		if (seasoning != null) return seasoning.getTitle().append(super.getName(stack).copy().withStyle(seasoning.color));
+		if (seasoning != null)
+			return seasoning.getTitle().append(super.getName(stack).copy().withStyle(seasoning.color));
 		return super.getName(stack);
 	}
 
@@ -90,7 +92,6 @@ public class BBQFoodItem extends Item {
 		if (ans == null || nbt == null) return ans;
 		BBQSeasoning seasoning = getSeasoning(stack);
 		if (seasoning == null) return ans;
-
 		FoodProperties.Builder builder = new FoodProperties.Builder()
 				.nutrition(ans.getNutrition())
 				.saturationMod(ans.getSaturationModifier());

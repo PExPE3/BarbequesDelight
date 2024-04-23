@@ -26,7 +26,8 @@ public enum BBQSeasoning {
 		this.info = info;
 		this.color = color;
 		name = name().toLowerCase(Locale.ROOT);
-		item = BarbequesDelight.REGISTRATE.item(name + "_powder", p -> new SeasoningItem(p, this))
+		item = BarbequesDelight.REGISTRATE.item(name + "_powder",
+						p -> new SeasoningItem(p.durability(64), this))
 				.register();
 	}
 

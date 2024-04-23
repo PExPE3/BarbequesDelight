@@ -35,7 +35,8 @@ public class GrillRecipeCategory extends BaseRecipeCategory<SimpleGrillingRecipe
 
 	public void setRecipe(IRecipeLayoutBuilder builder, SimpleGrillingRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 16, 22).addIngredients(recipe.ingredient);
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 22).addItemStack(recipe.output);
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 22).addItemStack(recipe.output)
+				.addTooltipCallback((view, list) -> list.add(BBQLangData.JEI_TIME.get("" + recipe.barbecuingTime / 20)));
 	}
 
 }

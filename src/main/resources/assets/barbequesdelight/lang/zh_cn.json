@@ -30,5 +30,10 @@
   "block.barbequesdelight.basin": "配料盆",
   "barbequesdelight.jei.grilling": "烧烤",
   "barbequesdelight.jei.skewering": "串串",
-  "barbequesdelight.tooltip.chance": "%2$s%%概率获得%1$s"
+  "barbequesdelight.tooltip.chance": "%2$s%%概率获得%1$s",
+  "barbequesdelight.jei.item_basin": "右键配料盆中的这个物品",
+  "barbequesdelight.jei.mainhand": "手持这个物品右键配料盆",
+  "barbequesdelight.jei.offhand": "副手持有这个物品",
+  "barbequesdelight.jei.offhand_empty": "副手不能持有物品",
+  "barbequesdelight.jei.time": "两面各烧烤%s秒"
 }

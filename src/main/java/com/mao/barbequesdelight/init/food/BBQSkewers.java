@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import vectorwing.farmersdelight.common.registry.ModEffects;
 
 import java.util.Locale;
 
@@ -18,15 +19,16 @@ public enum BBQSkewers {
 	LAMB(12, 0.8f, true, new EffectEntry(() -> MobEffects.REGENERATION, 1800, 0, 0.5f)),
 	RABBIT(10, 0.8f, true, new EffectEntry(() -> MobEffects.JUMP, 1800, 0, 1)),
 	PORK_SAUSAGE(8, 0.7f, true, new EffectEntry(() -> MobEffects.DAMAGE_RESISTANCE, 1800, 0, 0.5f)),
-	POTATO(6, 0.6f, true);
+	POTATO(6, 0.6f, true, new EffectEntry(ModEffects.NOURISHMENT, 1800, 0, 0.5f)),
+	;
 
-	public final ItemEntry<Item> item;
+	public final ItemEntry<BBQFoodItem> item;
 	public final ItemEntry<BBQFoodItem> skewer;
 
 	BBQSkewers(int food, float sat, boolean meat, EffectEntry... entries) {
 		String id = name().toLowerCase(Locale.ROOT);
 		item = BarbequesDelight.REGISTRATE.item("raw_" + id + "_skewer",
-						p -> new Item(p.craftRemainder(Items.STICK)))
+						p -> new BBQFoodItem(p.craftRemainder(Items.STICK)))
 				.tag(BBQTagGen.RAW_SKEWERS)
 				.model((ctx, pvd) -> pvd.handheld(ctx)).register();
 		skewer = BarbequesDelight.REGISTRATE.item("grilled_" + id + "_skewer",

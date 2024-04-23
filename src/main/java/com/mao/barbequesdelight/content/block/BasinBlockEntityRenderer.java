@@ -35,7 +35,7 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 				float xOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.2F;
 				float zOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.2F;
 				renderPos(direction, j, xOffset, zOffset, matrices);
-				matrices.mulPose(Axis.YP.rotationDegrees(direction.toYRot()));
+				matrices.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
 				Vec2 itemOffset = entity.OFFSETS[i];
 				matrices.translate(itemOffset.x, itemOffset.y, 0.0);
 				matrices.scale(0.375f, 0.375f, 0.375f);
@@ -77,7 +77,7 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 			}
 			case WEST -> {
 				matrices.translate(0.85 - (double) count / 20, 0.2, 0.5 + zOffset);
-				matrices.mulPose(Axis.ZN.rotationDegrees((float) -(20 + count * 4)));
+				matrices.mulPose(Axis.ZN.rotationDegrees((float) (20 + count * 4)));
 			}
 		}
 	}

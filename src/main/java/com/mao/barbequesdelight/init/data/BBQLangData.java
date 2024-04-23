@@ -19,6 +19,11 @@ public enum BBQLangData {
 	PEPPER_INFO("tooltip.pepper", "You can't wait to finish skewers with it!", 0, ChatFormatting.GRAY),
 	JEI_BBQ("jei.grilling", "Grilling", 0, null),
 	JEI_SKR("jei.skewering", "Skewering", 0, null),
+	JEI_TIME("jei.time", "Grilling time: %s seconds each side", 1, ChatFormatting.GRAY),
+	JEI_MAINHAND("jei.mainhand", "Right click basin with this item in main hand", 0, ChatFormatting.GRAY),
+	JEI_OFFHAND("jei.offhand", "Hold this item in off hand", 0, ChatFormatting.GRAY),
+	JEI_EMPTY("jei.offhand_empty", "Hold nothing in off hand", 0, ChatFormatting.GRAY),
+	JEI_BASIN("jei.item_basin", "Click this item in basin", 0, ChatFormatting.GRAY),
 	;
 
 	private final String key, def;

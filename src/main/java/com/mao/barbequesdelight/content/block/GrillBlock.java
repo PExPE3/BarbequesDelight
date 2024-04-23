@@ -1,5 +1,6 @@
 package com.mao.barbequesdelight.content.block;
 
+import com.mao.barbequesdelight.content.item.SeasoningItem;
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
 import dev.xkmc.l2modularblock.impl.BlockEntityBlockMethodImpl;
 import dev.xkmc.l2modularblock.mult.AnimateTickBlockMethod;
@@ -27,7 +28,8 @@ public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, OnC
 
 	public static final BlockMethod TE = new BlockEntityBlockMethodImpl<>(BBQDBlocks.TE_GRILL, GrillBlockEntity.class);
 
-	private static final VoxelShape SHAPE = Shapes.or(
+	public static final VoxelShape OUTER = Block.box(1, 12, 1, 15, 15, 15);
+	public static final VoxelShape SHAPE = Shapes.or(
 			Block.box(15, 0, 0, 16, 10, 1),
 			Block.box(15, 0, 15, 16, 10, 16),
 			Block.box(0, 0, 15, 1, 10, 16),
@@ -70,12 +72,18 @@ public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, OnC
 		ItemStack item = grill.getStack(i);
 		if (item.isEmpty()) {
 			if (stack.isEmpty()) return InteractionResult.PASS;
-			return grill.addItem(i, stack.split(1)) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+			return grill.addItem(i, stack) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 		} else if (player.isShiftKeyDown()) {
 			return grill.flip(i) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+		} else if (stack.getItem() instanceof SeasoningItem seasoning && seasoning.canSprinkle(item)) {
+			seasoning.sprinkle(stack, hit.getLocation(), item, player, hand);
+			return InteractionResult.SUCCESS;
 		} else {
 			if (!level.isClientSide()) {
-				player.getInventory().placeItemBackInInventory(item.split(1));
+				ItemStack ret = item.split(1);
+				if (player.getItemInHand(hand).isEmpty()) {
+					player.setItemInHand(hand, ret);
+				} else player.getInventory().placeItemBackInInventory(ret);
 				grill.inventoryChanged();
 			}
 			return InteractionResult.SUCCESS;

@@ -4,19 +4,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 
 public interface BlockSlot {
 
 	Vec2[] OFFSETS = {new Vec2(.2f, 0), new Vec2(-.2f, 0)};
 
+	AABB getBox();
+
 	default int getSlotForHitting(BlockHitResult hit, Level level) {
-		if (hit.getType() != HitResult.Type.BLOCK || hit.getDirection() != Direction.UP)
+		if (hit.getType() != HitResult.Type.BLOCK)
 			return 2;
 		Vec3 pos1 = hit.getLocation();
+		if (!getBox().contains(pos1))
+			return 2;
 		Direction facing = level.getBlockState(hit.getBlockPos())
 				.getValue(HorizontalDirectionalBlock.FACING).getOpposite();
 		BlockPos pos = hit.getBlockPos();

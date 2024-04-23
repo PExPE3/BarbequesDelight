@@ -13,11 +13,15 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import dev.xkmc.l2library.base.L2Registrate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Mod(BarbequesDelight.MODID)
+@Mod.EventBusSubscriber(modid = BarbequesDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BarbequesDelight {
 
 	public static final String MODID = "barbequesdelight";
@@ -36,6 +40,17 @@ public class BarbequesDelight {
 
 		REGISTRATE.addDataGenerator(ProviderType.LANG, BBQLangData::genLang);
 		REGISTRATE.addDataGenerator(ProviderType.RECIPE, BBQRecipeGen::genRecipe);
+	}
+
+	@SubscribeEvent
+	public static void commonInit(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
+			for (var e : BBQSkewers.values()) {
+				ComposterBlock.COMPOSTABLES.put(e.item.get(), 0.25f);
+				ComposterBlock.COMPOSTABLES.put(e.skewer.get(), 0.5f);
+			}
+			ComposterBlock.COMPOSTABLES.put(BBQDItems.BURNT_FOOD.get(), 0.25f);
+		});
 	}
 
 	public static ResourceLocation loc(String id) {

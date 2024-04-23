@@ -7,11 +7,13 @@ import dev.xkmc.l2modularblock.tile_api.BlockContainer;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
@@ -39,7 +41,12 @@ public class BasinBlockEntity extends BaseBlockEntity
 		inventoryChanged();
 	}
 
-	public boolean skewer(Player user, int slot) {
+	@Override
+	public AABB getBox() {
+		return BasinBlock.OUTER.bounds().move(getBlockPos()).deflate(0.01f);
+	}
+
+	public boolean skewer(Player user, int slot, InteractionHand hand) {
 		if (level == null) return false;
 		ItemStack stack = user.getMainHandItem();
 		ItemStack basin = items[slot];
@@ -49,7 +56,10 @@ public class BasinBlockEntity extends BaseBlockEntity
 		if (optional.isEmpty()) return false;
 		if (level.isClientSide()) return true;
 		SkeweringRecipe<?> recipe = optional.get();
-		user.getInventory().placeItemBackInInventory(recipe.assemble(cont, level.registryAccess()));
+		ItemStack ret = recipe.assemble(cont, level.registryAccess());
+		if (user.getItemInHand(hand).isEmpty()) {
+			user.setItemInHand(hand, ret);
+		} else user.getInventory().placeItemBackInInventory(ret);
 		inventoryChanged();
 		return true;
 	}
@@ -60,6 +70,7 @@ public class BasinBlockEntity extends BaseBlockEntity
 	}
 
 	public void inventoryChanged() {
+		setChanged();
 		sync();
 	}
 

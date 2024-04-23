@@ -21,16 +21,12 @@ import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 public abstract class CuttingBoardBlockMixin {
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	private void seasoning(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
+	public void barbequesdelight$use$seasoning(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
 		if (level.getBlockEntity(pos) instanceof CuttingBoardBlockEntity be) {
 			ItemStack handStack = player.getItemInHand(hand);
 			ItemStack storedStack = be.getStoredItem();
-			if (storedStack.getTag() == null &&
-					!storedStack.isEmpty() &&
-					handStack.getItem() instanceof SeasoningItem seasoningItem &&
-					storedStack.getItem() instanceof BBQFoodItem) {
-				seasoningItem.sprinkle(hit.getLocation(), storedStack, player);
-				handStack.hurtAndBreak(1, player, player1 -> player1.broadcastBreakEvent(hand));
+			if (handStack.getItem() instanceof SeasoningItem seasoningItem && seasoningItem.canSprinkle(storedStack)) {
+				seasoningItem.sprinkle(handStack, hit.getLocation(), storedStack, player, hand);
 				cir.setReturnValue(InteractionResult.SUCCESS);
 			}
 		}

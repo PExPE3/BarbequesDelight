@@ -9,6 +9,7 @@ import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import vectorwing.farmersdelight.common.block.entity.HeatableBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModParticleTypes;
@@ -53,19 +55,19 @@ public class GrillBlockEntity extends BaseBlockEntity
 			if (stack.isEmpty()) return;
 			time++;
 			if (time < duration) return;
-			if (!flipped) {
-				if (time >= duration * 2) {
-					burnt = true;
-					stack = BBQDItems.BURNT_FOOD.asStack();
-					be.inventoryChanged();
-				}
-				return;
+			if (time >= duration * 2) {
+				burnt = true;
+				stack = BBQDItems.BURNT_FOOD.asStack();
+				be.inventoryChanged();
 			}
+			if (!flipped) return;
 			if (time == duration && !be.level.isClientSide()) {
 				var cont = new SimpleContainer(stack);
 				var opt = be.level.getRecipeManager().getRecipeFor(BBQDRecipes.RT_BBQ.get(), cont, be.level);
 				if (opt.isPresent()) {
+					CompoundTag tag = stack.getTag();
 					stack = opt.get().assemble(cont, be.level.registryAccess());
+					stack.setTag(tag);
 					be.inventoryChanged();
 				}
 			}
@@ -101,7 +103,8 @@ public class GrillBlockEntity extends BaseBlockEntity
 				duration = opt.get().getBarbecuingTime();
 				time = 0;
 				flipped = burnt = false;
-				this.stack = stack;
+				this.stack = stack.copyWithCount(1);
+				stack.shrink(1);
 				be.inventoryChanged();
 			}
 			be.level.playSound(null, be.getBlockPos(), SoundEvents.LANTERN_PLACE, SoundSource.BLOCKS, 0.7F, 1.0F);
@@ -129,6 +132,13 @@ public class GrillBlockEntity extends BaseBlockEntity
 	public boolean addItem(int i, ItemStack stack) {
 		if (i < 0 || i >= size()) return false;
 		return entries[i].addItem(this, stack);
+	}
+
+	@Override
+	public AABB getBox() {
+		return GrillBlock.OUTER.bounds().move(getBlockPos())
+				.move(0, 1 / 16f, 0)
+				.deflate(0.01f);
 	}
 
 	@Override
@@ -201,7 +211,6 @@ public class GrillBlockEntity extends BaseBlockEntity
 		}
 	}
 
-
 	@Override
 	public List<Container> getContainers() {
 		ItemStack[] ans = new ItemStack[size()];
@@ -211,6 +220,7 @@ public class GrillBlockEntity extends BaseBlockEntity
 	}
 
 	public void inventoryChanged() {
+		setChanged();
 		sync();
 	}
 
