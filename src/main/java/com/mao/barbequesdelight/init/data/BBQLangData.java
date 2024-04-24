@@ -11,9 +11,9 @@ import java.util.Locale;
 
 public enum BBQLangData {
 	CHANCE_EFFECT("tooltip.chance", "%1$s with %2$s%% chance", 2, ChatFormatting.GRAY),
-	CHILI("seasoning.chili", "Chili Flavored", 0, ChatFormatting.YELLOW),
-	CUMIN("seasoning.cumin", "Cumin Flavored", 0, ChatFormatting.YELLOW),
-	PEPPER("seasoning.pepper", "Pepper Flavored", 0, ChatFormatting.YELLOW),
+	CHILI("seasoning.chili", "Chili Flavored ", 0, ChatFormatting.YELLOW),
+	CUMIN("seasoning.cumin", "Cumin Flavored ", 0, ChatFormatting.YELLOW),
+	PEPPER("seasoning.pepper", "Pepper Flavored ", 0, ChatFormatting.YELLOW),
 	CHILI_INFO("tooltip.chili", "It will make you always want to take one more skewer!", 0, ChatFormatting.GRAY),
 	CUMIN_INFO("tooltip.cumin", "Skewers with it will make you feel better~", 0, ChatFormatting.GRAY),
 	PEPPER_INFO("tooltip.pepper", "You can't wait to finish skewers with it!", 0, ChatFormatting.GRAY),

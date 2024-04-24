@@ -1,0 +1,5 @@
+1.0.1
+- Fix seasoning name display
+- Fix Carry On compatibility
+- Allow sandwich and wraps to carry over food effects
+- Change sandwich recipe a little bit

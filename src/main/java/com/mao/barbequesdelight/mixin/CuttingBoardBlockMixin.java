@@ -1,7 +1,6 @@
 package com.mao.barbequesdelight.mixin;
 
 import com.mao.barbequesdelight.content.item.SeasoningItem;
-import com.mao.barbequesdelight.content.item.BBQFoodItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

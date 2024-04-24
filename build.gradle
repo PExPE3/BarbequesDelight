@@ -144,7 +144,7 @@ dependencies {
         implementation("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")
     }
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
     if (rootMod.toBoolean()) {
         jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20,MC1.21)")
     }
@@ -196,13 +196,14 @@ dependencies {
         jarJar.ranged(it, "[1.1.0,)")
     }
 
+    //implementation fg.deobf("curse.maven:carry-on-274259:4882500")
     implementation fg.deobf("curse.maven:farmers-delight-398521:4638874")
 
     implementation fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     runtimeOnly fg.deobf("curse.maven:bookshelf-228525:4581675")
-    runtimeOnly fg.deobf("curse.maven:create-328085:4762216")
+    //runtimeOnly fg.deobf("curse.maven:create-328085:4762216")
     runtimeOnly fg.deobf("curse.maven:enchantment-descriptions-250419:4587429")
     runtimeOnly fg.deobf("curse.maven:appleskin-248787:4605078")
 

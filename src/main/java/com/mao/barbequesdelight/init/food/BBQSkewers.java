@@ -1,12 +1,11 @@
 package com.mao.barbequesdelight.init.food;
 
-import com.mao.barbequesdelight.content.item.BBQFoodItem;
+import com.mao.barbequesdelight.content.item.BBQSkewerItem;
 import com.mao.barbequesdelight.init.BarbequesDelight;
 import com.mao.barbequesdelight.init.data.BBQTagGen;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
@@ -22,17 +21,17 @@ public enum BBQSkewers {
 	POTATO(6, 0.6f, true, new EffectEntry(ModEffects.NOURISHMENT, 1800, 0, 0.5f)),
 	;
 
-	public final ItemEntry<BBQFoodItem> item;
-	public final ItemEntry<BBQFoodItem> skewer;
+	public final ItemEntry<BBQSkewerItem> item;
+	public final ItemEntry<BBQSkewerItem> skewer;
 
 	BBQSkewers(int food, float sat, boolean meat, EffectEntry... entries) {
 		String id = name().toLowerCase(Locale.ROOT);
 		item = BarbequesDelight.REGISTRATE.item("raw_" + id + "_skewer",
-						p -> new BBQFoodItem(p.craftRemainder(Items.STICK)))
+						p -> new BBQSkewerItem(p.craftRemainder(Items.STICK)))
 				.tag(BBQTagGen.RAW_SKEWERS)
 				.model((ctx, pvd) -> pvd.handheld(ctx)).register();
 		skewer = BarbequesDelight.REGISTRATE.item("grilled_" + id + "_skewer",
-						p -> new BBQFoodItem(p.craftRemainder(Items.STICK)
+						p -> new BBQSkewerItem(p.craftRemainder(Items.STICK)
 								.food(food(food, sat, meat, entries))))
 				.tag(BBQTagGen.GRILLED_SKEWERS)
 				.model((ctx, pvd) -> pvd.handheld(ctx)).register();

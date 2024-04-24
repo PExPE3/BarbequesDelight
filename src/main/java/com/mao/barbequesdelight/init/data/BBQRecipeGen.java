@@ -1,5 +1,6 @@
 package com.mao.barbequesdelight.init.data;
 
+import com.mao.barbequesdelight.content.recipe.CombineItemRecipeBuilder;
 import com.mao.barbequesdelight.content.recipe.GrillingRecipeBuilder;
 import com.mao.barbequesdelight.content.recipe.SkeweringRecipeBuilder;
 import com.mao.barbequesdelight.init.food.BBQSkewers;
@@ -10,7 +11,6 @@ import com.tterrag.registrate.util.DataIngredient;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -49,12 +49,12 @@ public class BBQRecipeGen {
 				.define('I', ItemTags.WOODEN_SLABS)
 				.save(pvd);
 
-		unlock(pvd, ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, BBQDItems.KEBAB_SANDWICH.get())::unlockedBy, Items.BREAD)
+		unlock(pvd, new CombineItemRecipeBuilder(BBQDItems.KEBAB_SANDWICH.get(), 1)::unlockedBy, Items.BREAD)
 				.requires(ForgeTags.BREAD).requires(BBQTagGen.GRILLED_SKEWERS).requires(BBQTagGen.GRILLED_SKEWERS)
-				.requires(ForgeTags.SALAD_INGREDIENTS_CABBAGE).requires(ForgeTags.SALAD_INGREDIENTS)
+				.requires(ForgeTags.SALAD_INGREDIENTS_CABBAGE).requires(ForgeTags.VEGETABLES_ONION)
 				.save(pvd);
 
-		unlock(pvd, ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, BBQDItems.KEBAB_WRAP.get())::unlockedBy, Items.BREAD)
+		unlock(pvd, new CombineItemRecipeBuilder(BBQDItems.KEBAB_WRAP.get(), 1)::unlockedBy, Items.BREAD)
 				.requires(ForgeTags.BREAD).requires(BBQTagGen.GRILLED_SKEWERS).requires(ForgeTags.SALAD_INGREDIENTS_CABBAGE)
 				.save(pvd);
 

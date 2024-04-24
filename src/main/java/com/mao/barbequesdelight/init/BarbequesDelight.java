@@ -3,6 +3,7 @@ package com.mao.barbequesdelight.init;
 
 import com.mao.barbequesdelight.init.data.BBQLangData;
 import com.mao.barbequesdelight.init.data.BBQRecipeGen;
+import com.mao.barbequesdelight.init.data.BBQTagGen;
 import com.mao.barbequesdelight.init.food.BBQSeasoning;
 import com.mao.barbequesdelight.init.food.BBQSkewers;
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
@@ -15,8 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +43,7 @@ public class BarbequesDelight {
 
 		REGISTRATE.addDataGenerator(ProviderType.LANG, BBQLangData::genLang);
 		REGISTRATE.addDataGenerator(ProviderType.RECIPE, BBQRecipeGen::genRecipe);
+		REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, BBQTagGen::onBlockTagGen);
 	}
 
 	@SubscribeEvent
@@ -50,6 +54,13 @@ public class BarbequesDelight {
 				ComposterBlock.COMPOSTABLES.put(e.skewer.get(), 0.5f);
 			}
 			ComposterBlock.COMPOSTABLES.put(BBQDItems.BURNT_FOOD.get(), 0.25f);
+		});
+	}
+
+	@SubscribeEvent
+	public static void communicate(InterModEnqueueEvent event) {
+		event.enqueueWork(() -> {
+			InterModComms.sendTo("carryon", "blacklistBlock", () -> MODID + ":grill");
 		});
 	}
 

@@ -41,7 +41,7 @@ public class SeasoningItem extends Item {
 
 	public void sprinkle(ItemStack self, Vec3 pos, ItemStack skewer, Player player, InteractionHand hand) {
 		if (!(player.level() instanceof ServerLevel sl)) return;
-		skewer.getOrCreateTag().putString(BBQFoodItem.KEY, getSeasoning().name());
+		skewer.getOrCreateTag().putString(BBQSkewerItem.KEY, getSeasoning().name());
 		player.playSound(SoundEvents.SAND_BREAK, 1.0f, 1.0f);
 		Integer color = seasoning.color.getColor();
 		int col = color == null ? 0 : color;
@@ -53,8 +53,8 @@ public class SeasoningItem extends Item {
 	public boolean canSprinkle(ItemStack storedStack) {
 		if (storedStack.isEmpty())
 			return false;
-		if (!(storedStack.getItem() instanceof BBQFoodItem))
+		if (!(storedStack.getItem() instanceof BBQSkewerItem))
 			return false;
-		return storedStack.getTag() == null || !storedStack.getTag().contains(BBQFoodItem.KEY);
+		return storedStack.getTag() == null || !storedStack.getTag().contains(BBQSkewerItem.KEY);
 	}
 }
