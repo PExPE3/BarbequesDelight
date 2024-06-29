@@ -1,6 +1,6 @@
 {
   "type": "barbequesdelight:grilling",
-  "barbecuingTime": 260,
+  "barbecuingTime": 280,
   "ingredient": {
     "item": "barbequesdelight:raw_chicken_skewer"
   },

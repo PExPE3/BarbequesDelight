@@ -22,13 +22,15 @@ import java.util.function.BiFunction;
 public class BBQRecipeGen {
 
 	public static void genRecipe(RegistrateRecipeProvider pvd) {
-		grillSkewer(pvd, BBQSkewers.COD, 300);
-		grillSkewer(pvd, BBQSkewers.SALMON, 300);
-		grillSkewer(pvd, BBQSkewers.CHICKEN, 260);
-		grillSkewer(pvd, BBQSkewers.RABBIT, 280);
-		grillSkewer(pvd, BBQSkewers.LAMB, 320);
-		grillSkewer(pvd, BBQSkewers.PORK_SAUSAGE, 340);
-		grillSkewer(pvd, BBQSkewers.POTATO, 280);
+		grillSkewer(pvd, BBQSkewers.COD, 6);
+		grillSkewer(pvd, BBQSkewers.SALMON, 6);
+		grillSkewer(pvd, BBQSkewers.CHICKEN, 7);
+		grillSkewer(pvd, BBQSkewers.RABBIT, 7);
+		grillSkewer(pvd, BBQSkewers.LAMB, 8);
+		grillSkewer(pvd, BBQSkewers.PORK_SAUSAGE, 9);
+		grillSkewer(pvd, BBQSkewers.POTATO, 7);
+		grillSkewer(pvd, BBQSkewers.BEEF, 8);
+		grillSkewer(pvd, BBQSkewers.MUSHROOM, 6);
 
 		craftSkewer(pvd, BBQSkewers.COD, Ingredient.of(ForgeTags.RAW_FISHES_COD), Ingredient.of(ForgeTags.VEGETABLES_TOMATO));
 		craftSkewer(pvd, BBQSkewers.SALMON, Ingredient.of(ForgeTags.RAW_FISHES_SALMON), Ingredient.of(ForgeTags.VEGETABLES_TOMATO));
@@ -63,7 +65,7 @@ public class BBQRecipeGen {
 	}
 
 	private static void grillSkewer(RegistrateRecipeProvider pvd, BBQSkewers skewer, int time) {
-		unlock(pvd, new GrillingRecipeBuilder(Ingredient.of(skewer.item.get()), skewer.skewer.asStack(), time)::unlockedBy, skewer.item.get())
+		unlock(pvd, new GrillingRecipeBuilder(Ingredient.of(skewer.item.get()), skewer.skewer.asStack(), time * 40)::unlockedBy, skewer.item.get())
 				.save(pvd, skewer.skewer.getId());
 	}
 
