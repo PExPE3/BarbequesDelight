@@ -1,4 +1,8 @@
 {
+  "barbequesdelight.jade.burnt": "¡¡ʇuɹnᗺ",
+  "barbequesdelight.jade.cook": "%ss :buıʞooƆ",
+  "barbequesdelight.jade.cooked": "¡pǝʞooƆ",
+  "barbequesdelight.jade.flip": "¡dıןℲ oʇ ʎpɐǝᴚ",
   "barbequesdelight.jei.grilling": "buıןןıɹ⅁",
   "barbequesdelight.jei.item_basin": "uısɐq uı ɯǝʇı sıɥʇ ʞɔıןƆ",
   "barbequesdelight.jei.mainhand": "puɐɥ uıɐɯ uı ɯǝʇı sıɥʇ ɥʇıʍ uısɐq ʞɔıןɔ ʇɥbıᴚ",
@@ -15,6 +19,7 @@
   "barbequesdelight.tooltip.pepper": "¡ʇı ɥʇıʍ sɹǝʍǝʞs ɥsıuıɟ oʇ ʇıɐʍ ʇ,uɐɔ noʎ",
   "block.barbequesdelight.basin": "uısɐᗺ sʇuǝıpǝɹbuI",
   "block.barbequesdelight.grill": "ןןıɹ⅁",
+  "config.jade.plugin_barbequesdelight.grill": "ʇɥbıןǝᗡ s,ǝnbǝqɹɐᗺ",
   "item.barbequesdelight.burnt_skewer": "ɹǝʍǝʞS ʇuɹnᗺ",
   "item.barbequesdelight.chili_powder": "ɹǝpʍoԀ ıןıɥƆ",
   "item.barbequesdelight.cumin_powder": "ɹǝpʍoԀ uıɯnƆ",

@@ -1,4 +1,8 @@
 {
+  "barbequesdelight.jade.burnt": "Burnt!!",
+  "barbequesdelight.jade.cook": "Cooking: %ss",
+  "barbequesdelight.jade.cooked": "Cooked!",
+  "barbequesdelight.jade.flip": "Ready to Flip!",
   "barbequesdelight.jei.grilling": "Grilling",
   "barbequesdelight.jei.item_basin": "Click this item in basin",
   "barbequesdelight.jei.mainhand": "Right click basin with this item in main hand",
@@ -15,6 +19,7 @@
   "barbequesdelight.tooltip.pepper": "You can't wait to finish skewers with it!",
   "block.barbequesdelight.basin": "Ingredients Basin",
   "block.barbequesdelight.grill": "Grill",
+  "config.jade.plugin_barbequesdelight.grill": "Barbeque's Delight",
   "item.barbequesdelight.burnt_skewer": "Burnt Skewer",
   "item.barbequesdelight.chili_powder": "Chili Powder",
   "item.barbequesdelight.cumin_powder": "Cumin Powder",

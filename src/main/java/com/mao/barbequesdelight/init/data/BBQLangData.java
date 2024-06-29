@@ -24,6 +24,11 @@ public enum BBQLangData {
 	JEI_OFFHAND("jei.offhand", "Hold this item in off hand", 0, ChatFormatting.GRAY),
 	JEI_EMPTY("jei.offhand_empty", "Hold nothing in off hand", 0, ChatFormatting.GRAY),
 	JEI_BASIN("jei.item_basin", "Click this item in basin", 0, ChatFormatting.GRAY),
+
+	JADE_COOK("jade.cook", "Cooking: %ss", 1, ChatFormatting.GRAY),
+	JADE_FLIP("jade.flip", "Ready to Flip!", 0, ChatFormatting.YELLOW),
+	JADE_COOKED("jade.cooked", "Cooked!", 0, ChatFormatting.YELLOW),
+	JADE_BURNT("jade.burnt", "Burnt!!", 0, ChatFormatting.RED),
 	;
 
 	private final String key, def;
@@ -56,6 +61,7 @@ public enum BBQLangData {
 		for (BBQLangData lang : BBQLangData.values()) {
 			pvd.add(lang.key, lang.def);
 		}
+		pvd.add("config.jade.plugin_barbequesdelight.grill", "Barbeque's Delight");
 	}
 
 }

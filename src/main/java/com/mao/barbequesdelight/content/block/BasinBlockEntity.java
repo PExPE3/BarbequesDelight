@@ -3,9 +3,11 @@ package com.mao.barbequesdelight.content.block;
 import com.mao.barbequesdelight.content.recipe.SkeweringRecipe;
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
 import dev.xkmc.l2library.base.tile.BaseBlockEntity;
+import dev.xkmc.l2library.base.tile.BaseContainerListener;
 import dev.xkmc.l2modularblock.tile_api.BlockContainer;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -14,18 +16,34 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @SerialClass
 public class BasinBlockEntity extends BaseBlockEntity
-		implements BlockContainer, BlockSlot {
+		implements BlockContainer, BlockSlot, BaseContainerListener {
 
 	@SerialClass.SerialField(toClient = true)
-	public final ItemStack[] items = {ItemStack.EMPTY, ItemStack.EMPTY};
+	public final BasinContainer items = new BasinContainer(2);
+
+	private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new InvWrapper(items));
 
 	public BasinBlockEntity(BlockEntityType<? extends BasinBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		items.add(this);
+
+	}
+
+	@Override
+	public void notifyTile() {
+		inventoryChanged();
 	}
 
 	public int size() {
@@ -33,12 +51,11 @@ public class BasinBlockEntity extends BaseBlockEntity
 	}
 
 	public ItemStack getStack(int i) {
-		return items[i];
+		return items.getItem(i);
 	}
 
 	public void setStack(int i, ItemStack split) {
-		items[i] = split;
-		inventoryChanged();
+		items.setItem(i, split);
 	}
 
 	@Override
@@ -49,7 +66,7 @@ public class BasinBlockEntity extends BaseBlockEntity
 	public boolean skewer(Player user, int slot, InteractionHand hand) {
 		if (level == null) return false;
 		ItemStack stack = user.getMainHandItem();
-		ItemStack basin = items[slot];
+		ItemStack basin = items.getItem(slot);
 		ItemStack garnishes = user.getOffhandItem();
 		var cont = new SimpleContainer(stack, basin, garnishes);
 		var optional = level.getRecipeManager().getRecipeFor(BBQDRecipes.RT_SKR.get(), cont, level);
@@ -66,12 +83,20 @@ public class BasinBlockEntity extends BaseBlockEntity
 
 	@Override
 	public List<Container> getContainers() {
-		return List.of(new SimpleContainer(items));
+		return List.of(items);
 	}
 
 	public void inventoryChanged() {
 		setChanged();
 		sync();
+	}
+
+	@Override
+	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER) {
+			return handler.cast();
+		}
+		return super.getCapability(cap, side);
 	}
 
 }

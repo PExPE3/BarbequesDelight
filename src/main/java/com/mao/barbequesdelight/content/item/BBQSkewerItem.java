@@ -65,7 +65,18 @@ public class BBQSkewerItem extends FoodItem {
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity consumer) {
 		applyEffects(stack, consumer);
-		return super.finishUsingItem(stack, level, consumer);
+		ItemStack remain = stack.getCraftingRemainingItem();
+		ItemStack ans = super.finishUsingItem(stack, level, consumer);
+		if (remain.isEmpty()) {
+			return ans;
+		}
+		if (ans.isEmpty()) {
+			return remain;
+		}
+		if (consumer instanceof Player player && !player.isCreative()) {
+			player.getInventory().placeItemBackInInventory(remain);
+		}
+		return ans;
 	}
 
 	protected void applyEffects(ItemStack stack, LivingEntity consumer) {

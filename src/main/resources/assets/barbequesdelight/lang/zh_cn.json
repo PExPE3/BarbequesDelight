@@ -35,5 +35,10 @@
   "barbequesdelight.jei.mainhand": "手持这个物品右键配料盆",
   "barbequesdelight.jei.offhand": "副手持有这个物品",
   "barbequesdelight.jei.offhand_empty": "副手不能持有物品",
-  "barbequesdelight.jei.time": "两面各烧烤%s秒"
+  "barbequesdelight.jei.time": "两面各烧烤%s秒",
+  "barbequesdelight.jade.cook": "烧烤中: 剩余%s秒",
+  "barbequesdelight.jade.cooked": "完成!",
+  "barbequesdelight.jade.flip": "该翻面了!",
+  "barbequesdelight.jade.burnt": "烤焦了!!",
+  "config.jade.plugin_barbequesdelight.grill": "烧烤乐事"
 }

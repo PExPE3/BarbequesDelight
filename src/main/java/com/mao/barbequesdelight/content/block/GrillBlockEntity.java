@@ -1,5 +1,6 @@
 package com.mao.barbequesdelight.content.block;
 
+import com.mao.barbequesdelight.init.data.BBQLangData;
 import com.mao.barbequesdelight.init.registrate.BBQDItems;
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
 import dev.xkmc.l2library.base.tile.BaseBlockEntity;
@@ -10,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -85,7 +87,7 @@ public class GrillBlockEntity extends BaseBlockEntity
 			if (be.level == null) return false;
 			if (!canFlip()) return false;
 			flipped = true;
-			time = 0;
+			time = duration / 2;
 			if (!be.level.isClientSide())
 				be.inventoryChanged();
 			be.level.playSound(null, be.getBlockPos(),
@@ -111,10 +113,28 @@ public class GrillBlockEntity extends BaseBlockEntity
 			return true;
 		}
 
+		public Component getTooltip() {
+			if (burnt) {
+				return BBQLangData.JADE_BURNT.get();
+			}
+			if (!flipped) {
+				if (time < duration / 2) {
+					return BBQLangData.JADE_COOK.get((duration / 2 - time) / 20 + 1);
+				} else {
+					return BBQLangData.JADE_FLIP.get();
+				}
+			} else {
+				if (time < duration) {
+					return BBQLangData.JADE_COOK.get((duration - time) / 20 + 1);
+				} else {
+					return BBQLangData.JADE_COOKED.get();
+				}
+			}
+		}
 	}
 
 	@SerialClass.SerialField(toClient = true)
-	private final ItemEntry[] entries = {new ItemEntry(), new ItemEntry()};
+	public final ItemEntry[] entries = {new ItemEntry(), new ItemEntry()};
 
 	public GrillBlockEntity(BlockEntityType<? extends GrillBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
