@@ -37,6 +37,8 @@ public class BBQRecipeGen {
 		craftSkewer(pvd, BBQSkewers.LAMB, Ingredient.of(ForgeTags.RAW_MUTTON));
 		craftSkewer(pvd, BBQSkewers.PORK_SAUSAGE, Ingredient.of(ForgeTags.RAW_PORK));
 		craftSkewer(pvd, BBQSkewers.POTATO, Ingredient.of(Items.POTATO), Ingredient.of(ForgeTags.RAW_BACON));
+		craftSkewer(pvd, BBQSkewers.MUSHROOM, Ingredient.of(Items.BROWN_MUSHROOM));
+		craftSkewer(pvd, BBQSkewers.BEEF, Ingredient.of(ForgeTags.RAW_BEEF), Ingredient.of(ForgeTags.SALAD_INGREDIENTS_CABBAGE));
 
 		unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BBQDBlocks.GRILL.get())::unlockedBy, Items.IRON_INGOT)
 				.pattern("ICI").pattern("I I").pattern("I I")

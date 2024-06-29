@@ -119,13 +119,13 @@ public class GrillBlockEntity extends BaseBlockEntity
 			}
 			if (!flipped) {
 				if (time < duration / 2) {
-					return BBQLangData.JADE_COOK.get((duration / 2 - time) / 20 + 1);
+					return BBQLangData.JADE_COOK.get((duration / 2 - time + 19) / 20);
 				} else {
 					return BBQLangData.JADE_FLIP.get();
 				}
 			} else {
 				if (time < duration) {
-					return BBQLangData.JADE_COOK.get((duration - time) / 20 + 1);
+					return BBQLangData.JADE_COOK.get((duration - time + 19) / 20);
 				} else {
 					return BBQLangData.JADE_COOKED.get();
 				}

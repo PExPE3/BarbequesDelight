@@ -7,7 +7,7 @@ import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.impl.ui.ItemStackElement;
+import snownee.jade.api.ui.IElementHelper;
 
 public class GrillInfo implements IBlockComponentProvider {
 
@@ -19,7 +19,8 @@ public class GrillInfo implements IBlockComponentProvider {
 			for (int i = 0; i <= 1; i++) {
 				var s = be.entries[i];
 				if (s.stack.isEmpty()) continue;
-				tooltip.add(ItemStackElement.of(s.stack,0.5f));
+				IElementHelper helper = IElementHelper.get();
+				tooltip.add(helper.smallItem(s.stack));
 				tooltip.append(s.getTooltip());
 			}
 		}
