@@ -53,7 +53,7 @@ public class BBQSkewerItem extends FoodItem {
 				.nutrition(ans.getNutrition())
 				.saturationMod(ans.getSaturationModifier());
 		for (var e : ans.getEffects()) {
-			builder.effect(e::getFirst, e.getSecond());
+			seasoning.appendEffect(builder, e.getFirst(), e.getSecond());
 		}
 		if (ans.isFastFood()) builder.fast();
 		if (ans.canAlwaysEat()) builder.alwaysEat();

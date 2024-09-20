@@ -15,6 +15,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.ForgeTags;
 
 import java.util.function.BiFunction;
@@ -22,6 +23,9 @@ import java.util.function.BiFunction;
 public class BBQRecipeGen {
 
 	public static void genRecipe(RegistrateRecipeProvider pvd) {
+		pvd.stonecutting(DataIngredient.tag(ItemTags.LOGS), RecipeCategory.MISC, BBQDBlocks.TRAY);
+
+
 		grillSkewer(pvd, BBQSkewers.COD, 6);
 		grillSkewer(pvd, BBQSkewers.SALMON, 6);
 		grillSkewer(pvd, BBQSkewers.CHICKEN, 7);
@@ -51,6 +55,15 @@ public class BBQRecipeGen {
 		unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BBQDBlocks.BASIN.get())::unlockedBy, Items.IRON_INGOT)
 				.pattern("I I").pattern(" I ")
 				.define('I', ItemTags.WOODEN_SLABS)
+				.save(pvd);
+
+		unlock(pvd, new CombineItemRecipeBuilder(BBQDItems.BIBIMBAP.get(), 1)::unlockedBy, ModItems.COOKED_RICE.get())
+				.requires(ModItems.COOKED_RICE.get())
+				.requires(ForgeTags.VEGETABLES_ONION)
+				.requires(ForgeTags.VEGETABLES_CARROT)
+				.requires(BBQTagGen.GRILLED_SKEWERS)
+				.requires(BBQTagGen.GRILLED_SKEWERS)
+				.requires(BBQTagGen.GRILLED_SKEWERS)
 				.save(pvd);
 
 		unlock(pvd, new CombineItemRecipeBuilder(BBQDItems.KEBAB_SANDWICH.get(), 1)::unlockedBy, Items.BREAD)

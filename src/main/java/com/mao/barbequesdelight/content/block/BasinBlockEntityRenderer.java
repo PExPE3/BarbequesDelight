@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.phys.Vec2;
 
 import java.util.Random;
 
@@ -23,26 +22,29 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 	}
 
 	@Override
-	public void render(BasinBlockEntity entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
+	public void render(BasinBlockEntity entity, float pTick, PoseStack pose, MultiBufferSource buffer, int light, int overlay) {
 		if (entity.getLevel() == null) return;
+		int lightAbove = LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos().above());
 		for (int i = 0; i < entity.size(); ++i) {
 			ItemStack stack = entity.getStack(i);
 			Direction direction = entity.getBlockState().getValue(HorizontalDirectionalBlock.FACING).getOpposite();
-			int seed = stack.isEmpty() ? 187 : stack.getItem().hashCode() + stack.getCount();
+			int seed = stack.isEmpty() ? 187 : stack.getItem().hashCode() + stack.getCount() + i * 64;
 			this.random.setSeed(seed);
+			var itemOffset = entity.getOffset(i);
 			for (int j = 0; j < getModelCount(stack); ++j) {
-				matrices.pushPose();
-				float xOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.2F;
-				float zOffset = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.2F;
-				renderPos(direction, j, xOffset, zOffset, matrices);
-				matrices.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
-				Vec2 itemOffset = entity.OFFSETS[i];
-				matrices.translate(itemOffset.x, itemOffset.y, 0.0);
-				matrices.scale(0.375f, 0.375f, 0.375f);
-				int lightAbove = LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos().above());
+				float r = (this.random.nextFloat() * 2.0F - 1.0F) * 0.03F;
+				pose.pushPose();
+				
+				pose.translate(0.5, 0.2, 0.5);
+				pose.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
+				pose.translate(r, itemOffset, 0.35 - j * 0.05);
+				pose.mulPose(Axis.XP.rotationDegrees(20 + j * 4));
+				pose.scale(0.375f, 0.375f, 0.375f);
+
 				Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED,
-						lightAbove, overlay, matrices, vertexConsumers, entity.getLevel(), i);
-				matrices.popPose();
+						lightAbove, overlay, pose, buffer, entity.getLevel(), i);
+
+				pose.popPose();
 			}
 		}
 	}
@@ -61,24 +63,6 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 		}
 	}
 
-	protected static void renderPos(Direction direction, int count, float xOffset, float zOffset, PoseStack matrices) {
-		switch (direction.getOpposite()) {
-			case SOUTH -> {
-				matrices.translate(0.5 + xOffset, 0.2, 0.15 + (double) count / 20);
-				matrices.mulPose(Axis.XP.rotationDegrees((float) -(20 + count * 4)));
-			}
-			case NORTH -> {
-				matrices.translate(0.5 + xOffset, 0.2, 0.85 - (double) count / 20);
-				matrices.mulPose(Axis.XN.rotationDegrees((float) -(20 + count * 4)));
-			}
-			case EAST -> {
-				matrices.translate(0.15 + (double) count / 20, 0.2, 0.5 + zOffset);
-				matrices.mulPose(Axis.ZP.rotationDegrees((float) (20 + count * 4)));
-			}
-			case WEST -> {
-				matrices.translate(0.85 - (double) count / 20, 0.2, 0.5 + zOffset);
-				matrices.mulPose(Axis.ZN.rotationDegrees((float) (20 + count * 4)));
-			}
-		}
+	protected static void renderPos(int count, float r, PoseStack matrices) {
 	}
 }

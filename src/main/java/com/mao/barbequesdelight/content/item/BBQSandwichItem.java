@@ -48,7 +48,10 @@ public class BBQSandwichItem extends FoodItem {
 		if (old.isFastFood()) builder.fast();
 		if (old.canAlwaysEat()) builder.alwaysEat();
 		Set<MobEffect> set = new HashSet<>();
-		for (var e : skewers) {
+		var list = new ArrayList<ItemStack>();
+		list.add(getDefaultInstance());
+		list.addAll(skewers);
+		for (var e : list) {
 			FoodProperties x = e.getFoodProperties(entity);
 			if (x == null) continue;
 			for (var eff : x.getEffects()) {

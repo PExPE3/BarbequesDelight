@@ -31,6 +31,11 @@ public class BBQDItems {
 			p -> new BBQSandwichItem(p.food(new FoodProperties.Builder().nutrition(14).saturationMod(0.7f)
 					.build()))).register();
 
+	public static final ItemEntry<BBQSandwichItem> BIBIMBAP = reg("bibimbap",
+			p -> new BBQSandwichItem(p.food(new FoodProperties.Builder().nutrition(16).saturationMod(0.7f)
+					.effect(() -> new MobEffectInstance(ModEffects.COMFORT.get(), 2400), 1)
+					.build()))).register();
+
 	private static <T extends Item> ItemBuilder<T, ?> reg(String id, NonNullFunction<Item.Properties, T> item) {
 		return BarbequesDelight.REGISTRATE.item(id, item);
 	}

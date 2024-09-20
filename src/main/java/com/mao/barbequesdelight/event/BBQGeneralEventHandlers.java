@@ -16,8 +16,9 @@ public class BBQGeneralEventHandlers {
 	public static void registerBBQDTrades(VillagerTradesEvent event) {
 		if (event.getType() == VillagerProfession.BUTCHER) {
 			for (var e : BBQSeasoning.values())
+				if (e.isCustomSeasoning())
 				event.getTrades().get(1).add(new BasicItemListing(
-						12, e.item.asStack(), 4, 4, 0.05f
+						12, e.asItem().getDefaultInstance(), 4, 4, 0.05f
 				));
 		}
 	}

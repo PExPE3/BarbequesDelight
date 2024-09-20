@@ -214,10 +214,10 @@ public class GrillBlockEntity extends BaseBlockEntity
 				double x0 = pos.getX() + .5d;
 				double y = pos.getY() + 1.d;
 				double z0 = pos.getZ() + .5d;
-				var v1 = OFFSETS[i];
+				var v1 = getOffset(i);
 				Direction dir = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 				int index = dir.get2DDataValue();
-				Vec2 offset = index % 2 == 0 ? v1 : new Vec2(v1.y, v1.x);
+				Vec2 offset = index % 2 == 0 ? new Vec2(v1, 0) : new Vec2(0, v1);
 				double x = x0 - (dir.getStepX() * offset.x) + (dir.getClockWise().getStepX() * offset.x);
 				double z = z0 - (dir.getStepZ() * offset.y) + (dir.getClockWise().getStepZ() * offset.y);
 				for (int j = 0; j < (entries[i].smoking() ? 8 : 1); ++j) {

@@ -21,6 +21,7 @@ public enum BBQSkewers {
 	RABBIT(10, 0.8f, true, new EffectEntry(() -> MobEffects.JUMP, 1800, 0, 1)),
 	PORK_SAUSAGE(8, 0.7f, true, new EffectEntry(() -> MobEffects.DAMAGE_RESISTANCE, 1800, 0, 0.5f)),
 	POTATO(6, 0.6f, true, new EffectEntry(ModEffects.NOURISHMENT, 1800, 0, 0.5f)),
+	VEGETABLE(5, 0.5f, true, new EffectEntry(() -> MobEffects.REGENERATION, 1200, 0, 0.25f)),
 	;
 
 	public final ItemEntry<BBQSkewerItem> item;

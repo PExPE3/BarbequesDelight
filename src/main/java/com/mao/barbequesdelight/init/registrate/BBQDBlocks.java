@@ -33,19 +33,33 @@ public class BBQDBlocks {
 
 
 	public static final BlockEntry<DelegateBlock> BASIN = BarbequesDelight.REGISTRATE.block("basin", p -> DelegateBlock.newBaseBlock(
-			BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
-			BlockProxy.HORIZONTAL,
-			new BasinBlock(),
-			BasinBlock.TE
-	)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/basin")
-			.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/basin")))
-			.renderType("cutout")
-	)).simpleItem().defaultLoot().tag(BlockTags.MINEABLE_WITH_AXE)
+					BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
+					BlockProxy.HORIZONTAL,
+					new BasinBlock(),
+					BasinBlock.TE
+			)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/basin")
+					.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/basin")))
+					.renderType("cutout")
+			)).simpleItem().defaultLoot().tag(BlockTags.MINEABLE_WITH_AXE)
 			.lang("Ingredients Basin").register();
 
 	public static final BlockEntityEntry<BasinBlockEntity> TE_BASIN = BarbequesDelight.REGISTRATE
 			.blockEntity("basin", BasinBlockEntity::new).validBlock(BASIN)
 			.renderer(() -> BasinBlockEntityRenderer::new).register();
+
+
+	public static final BlockEntry<DelegateBlock> TRAY = BarbequesDelight.REGISTRATE.block("tray", p -> DelegateBlock.newBaseBlock(
+			BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
+			BlockProxy.HORIZONTAL,
+			new TrayBlock()
+			//TrayBlock.TE
+	)).blockstate((ctx, pvd) -> {
+		var base = pvd.models().getBuilder("block/tray")
+				.parent(new ModelFile.UncheckedModelFile(pvd.modLoc("custom/tray")));
+		var tray = pvd.models().getBuilder("block/tray_support")
+				.parent(new ModelFile.UncheckedModelFile(pvd.modLoc("custom/tray_support")));
+		pvd.horizontalBlock(ctx.get(), s -> s.getValue(TrayBlock.SUPPORT) ? tray : base);
+	}).simpleItem().defaultLoot().tag(BlockTags.MINEABLE_WITH_AXE).register();
 
 	public static void register() {
 	}

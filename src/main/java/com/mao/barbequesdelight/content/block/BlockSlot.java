@@ -4,49 +4,40 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public interface BlockSlot {
 
-	Vec2[] OFFSETS = {new Vec2(.2f, 0), new Vec2(-.2f, 0)};
+	default float getOffset(int index) {
+		return ((index + 0.5f) / size() - 0.5f) * 0.8f;
+	}
 
 	AABB getBox();
 
+	int size();
+
 	default int getSlotForHitting(BlockHitResult hit, Level level) {
 		if (hit.getType() != HitResult.Type.BLOCK)
-			return 2;
+			return -1;
 		Vec3 pos1 = hit.getLocation();
 		if (!getBox().contains(pos1))
-			return 2;
+			return -1;
 		Direction facing = level.getBlockState(hit.getBlockPos())
 				.getValue(HorizontalDirectionalBlock.FACING).getOpposite();
 		BlockPos pos = hit.getBlockPos();
-		boolean left = false;
-		boolean right = false;
+		int size = size();
+		double index = 0;
 		switch (facing) {
-			case NORTH -> {
-				left = pos1.x - pos.getX() < 0.5D;
-				right = pos1.x - pos.getX() > 0.5D;
-			}
-			case SOUTH -> {
-				left = pos1.x - pos.getX() > 0.5D;
-				right = pos1.x - pos.getX() < 0.5D;
-			}
-			case EAST -> {
-				left = pos1.z - pos.getZ() < 0.5D;
-				right = pos1.z - pos.getZ() > 0.5D;
-			}
-			case WEST -> {
-				left = pos1.z - pos.getZ() > 0.5D;
-				right = pos1.z - pos.getZ() < 0.5D;
-			}
+			case NORTH -> index = pos1.x - pos.getX();
+			case SOUTH -> index = 1 - (pos1.x - pos.getX());
+			case EAST -> index = pos1.z - pos.getZ();
+			case WEST -> index = 1 - (pos1.z - pos.getZ());
 		}
-		if (left) {
-			return 0;
-		} else if (right) {
-			return 1;
-		}
-		return 2;
+		int ans = (int) (index * size);
+		return ans >= 0 && ans < size ? ans : -1;
 	}
 
 }

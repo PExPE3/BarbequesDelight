@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.phys.Vec2;
 
 import java.util.Objects;
 
@@ -31,8 +30,8 @@ public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockE
 				matrices.translate(0.5, 0.96, 0.5);
 				matrices.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
 				matrices.mulPose(Axis.XP.rotationDegrees(90.0F));
-				Vec2 itemOffset = BlockSlot.OFFSETS[i];
-				matrices.translate(itemOffset.x, itemOffset.y, 0.0);
+				var itemOffset = entity.getOffset(i);
+				matrices.translate(itemOffset, 0, 0.0);
 				matrices.scale(0.4f, 0.4f, 0.4f);
 				matrices.mulPose(Axis.YP.rotationDegrees(entity.isFlipped(i) ? 180 : 0));
 				int lightAbove = LevelRenderer.getLightColor(Objects.requireNonNull(entity.getLevel()), entity.getBlockPos().above());

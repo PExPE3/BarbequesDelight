@@ -44,5 +44,18 @@
   "barbequesdelight.jade.cooked": "完成!",
   "barbequesdelight.jade.flip": "该翻面了!",
   "barbequesdelight.jade.burnt": "烤焦了!!",
-  "config.jade.plugin_barbequesdelight.grill": "烧烤乐事"
+  "config.jade.plugin_barbequesdelight.grill": "烧烤乐事",
+  "barbequesdelight.seasoning.barbeque": "烤肉酱味",
+  "barbequesdelight.seasoning.buffalo": "布法罗味",
+  "barbequesdelight.seasoning.honey_mustard": "蜂蜜芥末味",
+  "barbequesdelight.tooltip.barbeque": "它让烤串的风味更持久",
+  "barbequesdelight.tooltip.buffalo": "它让烤串的风味更持强",
+  "barbequesdelight.tooltip.honey_mustard": "它让烤串的风味更明显",
+  "block.barbequesdelight.tray": "托盘",
+  "item.barbequesdelight.barbeque_sauce": "烤肉酱",
+  "item.barbequesdelight.bibimbap": "烤肉盖饭",
+  "item.barbequesdelight.buffalo_sauce": "布法罗酱",
+  "item.barbequesdelight.grilled_vegetable_skewer": "烤果蔬串",
+  "item.barbequesdelight.honey_mustard_sauce": "蜂蜜芥末酱",
+  "item.barbequesdelight.raw_vegetable_skewer": "烤果蔬串"
 }
