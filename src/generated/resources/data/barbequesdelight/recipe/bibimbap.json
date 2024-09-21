@@ -1,0 +1,28 @@
+{
+  "type": "barbequesdelight:combine",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "farmersdelight:cooked_rice"
+    },
+    {
+      "tag": "c:foods/onion"
+    },
+    {
+      "tag": "c:crops/carrot"
+    },
+    {
+      "tag": "barbequesdelight:grilled_skewers"
+    },
+    {
+      "tag": "barbequesdelight:grilled_skewers"
+    },
+    {
+      "tag": "barbequesdelight:grilled_skewers"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "barbequesdelight:bibimbap"
+  }
+}

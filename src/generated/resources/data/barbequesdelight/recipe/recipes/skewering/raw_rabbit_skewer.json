@@ -1,0 +1,18 @@
+{
+  "type": "barbequesdelight:skewering",
+  "ingredient": {
+    "item": "minecraft:rabbit"
+  },
+  "ingredientCount": 2,
+  "output": {
+    "count": 1,
+    "id": "barbequesdelight:raw_rabbit_skewer"
+  },
+  "side": {
+    "tag": "c:foods/cabbage"
+  },
+  "sideCount": 2,
+  "tool": {
+    "item": "minecraft:stick"
+  }
+}

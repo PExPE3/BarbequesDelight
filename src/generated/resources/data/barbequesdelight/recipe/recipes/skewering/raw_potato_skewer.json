@@ -1,0 +1,18 @@
+{
+  "type": "barbequesdelight:skewering",
+  "ingredient": {
+    "item": "minecraft:potato"
+  },
+  "ingredientCount": 2,
+  "output": {
+    "count": 1,
+    "id": "barbequesdelight:raw_potato_skewer"
+  },
+  "side": {
+    "tag": "c:foods/raw_bacon"
+  },
+  "sideCount": 2,
+  "tool": {
+    "item": "minecraft:stick"
+  }
+}

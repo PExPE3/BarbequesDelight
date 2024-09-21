@@ -5,11 +5,15 @@ import dev.xkmc.l2modularblock.tile_api.BlockContainer;
 import dev.xkmc.l2serial.serialization.marker.SerialClass;
 import dev.xkmc.l2serial.serialization.marker.SerialField;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @SerialClass
@@ -17,6 +21,8 @@ public abstract class StorageTileBlockEntity extends BaseBlockEntity implements 
 
 	@SerialField
 	public final StorageTileContainer items = new StorageTileContainer(size());
+
+	private final InvWrapper handler = new InvWrapper(items);
 
 	public StorageTileBlockEntity(BlockEntityType<? extends StorageTileBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -42,6 +48,8 @@ public abstract class StorageTileBlockEntity extends BaseBlockEntity implements 
 		return List.of(items);
 	}
 
-	//TODO cap
+	public IItemHandler getItemHandler(@Nullable Direction side) {
+		return handler;
+	}
 
 }

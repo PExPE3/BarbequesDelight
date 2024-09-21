@@ -4,6 +4,7 @@ import com.mao.barbequesdelight.content.item.SeasoningItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,14 +20,14 @@ import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 @Mixin(CuttingBoardBlock.class)
 public abstract class CuttingBoardBlockMixin {
 
-	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	public void barbequesdelight$use$seasoning(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
+	@Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
+	public void barbequesdelight$use$seasoning(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<ItemInteractionResult> cir) {
 		if (level.getBlockEntity(pos) instanceof CuttingBoardBlockEntity be) {
 			ItemStack handStack = player.getItemInHand(hand);
 			ItemStack storedStack = be.getStoredItem();
 			if (handStack.getItem() instanceof SeasoningItem seasoningItem && seasoningItem.canSprinkle(storedStack)) {
 				seasoningItem.sprinkle(handStack, hit.getLocation(), storedStack, player, hand);
-				cir.setReturnValue(InteractionResult.SUCCESS);
+				cir.setReturnValue(ItemInteractionResult.SUCCESS);
 			}
 		}
 	}

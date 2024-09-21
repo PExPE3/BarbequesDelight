@@ -1,0 +1,15 @@
+{
+  "type": "barbequesdelight:skewering",
+  "ingredient": {
+    "tag": "c:foods/raw_mutton"
+  },
+  "ingredientCount": 4,
+  "output": {
+    "count": 1,
+    "id": "barbequesdelight:raw_lamb_skewer"
+  },
+  "sideCount": 0,
+  "tool": {
+    "item": "minecraft:stick"
+  }
+}

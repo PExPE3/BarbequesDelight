@@ -1,0 +1,18 @@
+{
+  "type": "barbequesdelight:skewering",
+  "ingredient": {
+    "tag": "c:foods/raw_chicken"
+  },
+  "ingredientCount": 2,
+  "output": {
+    "count": 1,
+    "id": "barbequesdelight:raw_chicken_skewer"
+  },
+  "side": {
+    "tag": "c:foods/onion"
+  },
+  "sideCount": 2,
+  "tool": {
+    "item": "minecraft:stick"
+  }
+}

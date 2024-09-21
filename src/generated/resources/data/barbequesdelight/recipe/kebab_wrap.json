@@ -1,0 +1,19 @@
+{
+  "type": "barbequesdelight:combine",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:foods/bread"
+    },
+    {
+      "tag": "barbequesdelight:grilled_skewers"
+    },
+    {
+      "tag": "c:foods/cabbage"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "barbequesdelight:kebab_wrap"
+  }
+}

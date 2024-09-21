@@ -1,6 +1,7 @@
 package com.mao.barbequesdelight.init;
 
 
+import com.mao.barbequesdelight.content.block.StorageTileBlockEntity;
 import com.mao.barbequesdelight.init.data.BBQLangData;
 import com.mao.barbequesdelight.init.data.BBQRecipeGen;
 import com.mao.barbequesdelight.init.data.BBQTagGen;
@@ -15,13 +16,18 @@ import dev.xkmc.l2core.init.reg.registrate.SimpleEntry;
 import dev.xkmc.l2core.init.reg.simple.Reg;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.block.ComposterBlock;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,11 +58,28 @@ public class BarbequesDelight {
 	@SubscribeEvent
 	public static void commonInit(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-			for (var e : BBQSkewers.values()) {//TODO
-				ComposterBlock.COMPOSTABLES.put(e.item.get(), 0.25f);
-				ComposterBlock.COMPOSTABLES.put(e.skewer.get(), 0.5f);
+
+		});
+	}
+
+	@SubscribeEvent
+	public static void onCapabilityRegister(RegisterCapabilitiesEvent event) {
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BBQDBlocks.TE_BASIN.get(), StorageTileBlockEntity::getItemHandler);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BBQDBlocks.TE_TRAY.get(), StorageTileBlockEntity::getItemHandler);
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGH)
+	public static void gatherData(GatherDataEvent event) {
+		REGISTRATE.addDataGenerator(ProviderType.DATA_MAP, ctx -> {
+			var builder = ctx.builder(NeoForgeDataMaps.COMPOSTABLES);
+			for (var e : BBQSkewers.values()) {
+				builder.add(e.item, new Compostable(0.25f), false);
+				builder.add(e.skewer, new Compostable(0.5f), false);
 			}
-			ComposterBlock.COMPOSTABLES.put(BBQDItems.BURNT_FOOD.get(), 0.25f);
+			builder.add(BBQDItems.BURNT_FOOD, new Compostable(0.25f), false);
+			builder.add(BBQDItems.KEBAB_WRAP, new Compostable(0.5f), false);
+			builder.add(BBQDItems.KEBAB_SANDWICH, new Compostable(0.75f), false);
+			builder.add(BBQDItems.BIBIMBAP, new Compostable(1f), false);
 		});
 	}
 
