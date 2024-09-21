@@ -3,7 +3,6 @@ package com.mao.barbequesdelight.content.block;
 import com.mao.barbequesdelight.content.recipe.SkeweringRecipe;
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
 import dev.xkmc.l2library.base.tile.BaseBlockEntity;
-import dev.xkmc.l2library.base.tile.BaseContainerListener;
 import dev.xkmc.l2modularblock.tile_api.BlockContainer;
 import dev.xkmc.l2serial.serialization.SerialClass;
 import net.minecraft.core.BlockPos;
@@ -27,40 +26,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SerialClass
-public class BasinBlockEntity extends BaseBlockEntity
-		implements BlockContainer, BlockSlot, BaseContainerListener {
-
-	@SerialClass.SerialField(toClient = true)
-	public final BBQContainer items = new BBQContainer(2);
-
-	private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> new InvWrapper(items));
+public class BasinBlockEntity extends StorageTileBlockEntity {
 
 	public BasinBlockEntity(BlockEntityType<? extends BasinBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		items.add(this);
-
-	}
-
-	@Override
-	public void notifyTile() {
-		inventoryChanged();
 	}
 
 	public int size() {
 		return 2;
-	}
-
-	public ItemStack getStack(int i) {
-		return items.getItem(i);
-	}
-
-	public void setStack(int i, ItemStack split) {
-		items.setItem(i, split);
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return super.getRenderBoundingBox();
 	}
 
 	@Override
@@ -68,7 +42,7 @@ public class BasinBlockEntity extends BaseBlockEntity
 		return BasinBlock.OUTER.bounds().move(getBlockPos()).deflate(0.01f);
 	}
 
-	public boolean skewer(Player user, int slot, InteractionHand hand) {
+	public boolean specialClick(Player user, int slot, InteractionHand hand) {
 		if (level == null) return false;
 		ItemStack stack = user.getMainHandItem();
 		ItemStack basin = items.getItem(slot);
@@ -82,26 +56,8 @@ public class BasinBlockEntity extends BaseBlockEntity
 		if (user.getItemInHand(hand).isEmpty()) {
 			user.setItemInHand(hand, ret);
 		} else user.getInventory().placeItemBackInInventory(ret);
-		inventoryChanged();
+		notifyTile();
 		return true;
-	}
-
-	@Override
-	public List<Container> getContainers() {
-		return List.of(items);
-	}
-
-	public void inventoryChanged() {
-		setChanged();
-		sync();
-	}
-
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER) {
-			return handler.cast();
-		}
-		return super.getCapability(cap, side);
 	}
 
 }

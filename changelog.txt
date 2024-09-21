@@ -1,3 +1,8 @@
+1.0.4
+- Add 3 more seasonings
+- Add bibimbap and vegetable skewers
+- Add Tray TODO survive check
+
 1.0.3
 - Add beef and mushroom skewers
 - Reduce second step required cooking time

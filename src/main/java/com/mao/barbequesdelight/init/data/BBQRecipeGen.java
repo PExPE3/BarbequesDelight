@@ -23,8 +23,8 @@ import java.util.function.BiFunction;
 public class BBQRecipeGen {
 
 	public static void genRecipe(RegistrateRecipeProvider pvd) {
-		pvd.stonecutting(DataIngredient.tag(ItemTags.LOGS), RecipeCategory.MISC, BBQDBlocks.TRAY);
-
+		pvd.stonecutting(DataIngredient.tag(ItemTags.LOGS), RecipeCategory.MISC, BBQDBlocks.TRAY, 4);
+		pvd.stonecutting(DataIngredient.tag(ItemTags.LOGS), RecipeCategory.MISC, BBQDBlocks.BASIN, 2);
 
 		grillSkewer(pvd, BBQSkewers.COD, 6);
 		grillSkewer(pvd, BBQSkewers.SALMON, 6);
@@ -35,6 +35,7 @@ public class BBQRecipeGen {
 		grillSkewer(pvd, BBQSkewers.POTATO, 7);
 		grillSkewer(pvd, BBQSkewers.BEEF, 8);
 		grillSkewer(pvd, BBQSkewers.MUSHROOM, 6);
+		grillSkewer(pvd, BBQSkewers.VEGETABLE, 4);
 
 		craftSkewer(pvd, BBQSkewers.COD, Ingredient.of(ForgeTags.RAW_FISHES_COD), Ingredient.of(ForgeTags.VEGETABLES_TOMATO));
 		craftSkewer(pvd, BBQSkewers.SALMON, Ingredient.of(ForgeTags.RAW_FISHES_SALMON), Ingredient.of(ForgeTags.VEGETABLES_TOMATO));
@@ -50,11 +51,6 @@ public class BBQRecipeGen {
 				.pattern("ICI").pattern("I I").pattern("I I")
 				.define('I', Items.IRON_INGOT)
 				.define('C', Items.IRON_TRAPDOOR)
-				.save(pvd);
-
-		unlock(pvd, ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BBQDBlocks.BASIN.get())::unlockedBy, Items.IRON_INGOT)
-				.pattern("I I").pattern(" I ")
-				.define('I', ItemTags.WOODEN_SLABS)
 				.save(pvd);
 
 		unlock(pvd, new CombineItemRecipeBuilder(BBQDItems.BIBIMBAP.get(), 1)::unlockedBy, ModItems.COOKED_RICE.get())

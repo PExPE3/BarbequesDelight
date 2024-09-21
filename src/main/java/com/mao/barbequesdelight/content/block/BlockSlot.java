@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 public interface BlockSlot {
 
 	default float getOffset(int index) {
-		return ((index + 0.5f) / size() - 0.5f) * 0.8f;
+		return -((index + 0.5f) / size() - 0.5f) * 0.8f;
 	}
 
 	AABB getBox();

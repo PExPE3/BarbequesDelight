@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_iron_ingot": {
+    "has_logs": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:iron_ingot"
-            ]
+            "tag": "minecraft:logs"
           }
         ]
       },
@@ -15,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "barbequesdelight:basin"
+        "recipe": "barbequesdelight:basin_from_logs_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_iron_ingot",
+      "has_logs",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "barbequesdelight:basin"
+      "barbequesdelight:basin_from_logs_stonecutting"
     ]
   },
   "sends_telemetry_event": false

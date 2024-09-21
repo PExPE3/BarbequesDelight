@@ -11,18 +11,31 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Random;
 
-public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockEntity> {
+public class StorageTileRenderer<T extends BlockEntity & StorageTile> implements BlockEntityRenderer<T> {
+
+	private static final int[] COUNT = {0, 1, 2, 4, 6, 8, 12, 16, 24, 32, 40, 56, 64};
+	private static final int[] REV = new int[64];
+
+	static {
+		int k = 0;
+		for (int i = 0; i < 64; i++) {
+			if (i > COUNT[k]) k++;
+			REV[i] = k;
+		}
+	}
 
 	private final Random random = new Random(42);
 
-	public BasinBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+
+	public StorageTileRenderer(BlockEntityRendererProvider.Context context) {
 	}
 
 	@Override
-	public void render(BasinBlockEntity entity, float pTick, PoseStack pose, MultiBufferSource buffer, int light, int overlay) {
+	public void render(T entity, float pTick, PoseStack pose, MultiBufferSource buffer, int light, int overlay) {
 		if (entity.getLevel() == null) return;
 		int lightAbove = LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos().above());
 		for (int i = 0; i < entity.size(); ++i) {
@@ -34,10 +47,10 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 			for (int j = 0; j < getModelCount(stack); ++j) {
 				float r = (this.random.nextFloat() * 2.0F - 1.0F) * 0.03F;
 				pose.pushPose();
-				
+
 				pose.translate(0.5, 0.2, 0.5);
 				pose.mulPose(Axis.YP.rotationDegrees(-direction.toYRot()));
-				pose.translate(r, itemOffset, 0.35 - j * 0.05);
+				pose.translate(itemOffset + r, 0, 0.35 - j * 0.05);
 				pose.mulPose(Axis.XP.rotationDegrees(20 + j * 4));
 				pose.scale(0.375f, 0.375f, 0.375f);
 
@@ -50,19 +63,8 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
 	}
 
 	protected int getModelCount(ItemStack stack) {
-		if (stack.getCount() > 48) {
-			return 12;
-		} else if (stack.getCount() > 32) {
-			return 10;
-		} else if (stack.getCount() > 16) {
-			return 8;
-		} else if (stack.getCount() > 8) {
-			return 6;
-		} else {
-			return stack.getCount() > 1 ? 2 : 1;
-		}
+		int count = stack.getCount();
+		return count < REV.length ? REV[count] : 12;
 	}
 
-	protected static void renderPos(int count, float r, PoseStack matrices) {
-	}
 }

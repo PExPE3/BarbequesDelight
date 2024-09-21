@@ -17,9 +17,7 @@ public class BBQDBlocks {
 
 	public static final BlockEntry<DelegateBlock> GRILL = BarbequesDelight.REGISTRATE.block("grill", p -> DelegateBlock.newBaseBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 6.0F).sound(SoundType.LANTERN),
-			BlockProxy.HORIZONTAL,
-			new GrillBlock(),
-			GrillBlock.TE
+			BlockProxy.HORIZONTAL, new GrillBlock(), GrillBlock.TE
 	)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/grill")
 			.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/grill")))
 			.texture("side", pvd.modLoc("block/grill_side"))
@@ -34,9 +32,7 @@ public class BBQDBlocks {
 
 	public static final BlockEntry<DelegateBlock> BASIN = BarbequesDelight.REGISTRATE.block("basin", p -> DelegateBlock.newBaseBlock(
 					BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
-					BlockProxy.HORIZONTAL,
-					new BasinBlock(),
-					BasinBlock.TE
+					BlockProxy.HORIZONTAL, ClickStorageMethod.INS, new BasinBlock(), BasinBlock.TE
 			)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/basin")
 					.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/basin")))
 					.renderType("cutout")
@@ -45,21 +41,25 @@ public class BBQDBlocks {
 
 	public static final BlockEntityEntry<BasinBlockEntity> TE_BASIN = BarbequesDelight.REGISTRATE
 			.blockEntity("basin", BasinBlockEntity::new).validBlock(BASIN)
-			.renderer(() -> BasinBlockEntityRenderer::new).register();
+			.renderer(() -> StorageTileRenderer::new).register();
 
 
 	public static final BlockEntry<DelegateBlock> TRAY = BarbequesDelight.REGISTRATE.block("tray", p -> DelegateBlock.newBaseBlock(
 			BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
-			BlockProxy.HORIZONTAL,
-			new TrayBlock()
-			//TrayBlock.TE
+			BlockProxy.HORIZONTAL, ClickStorageMethod.INS, new TrayBlock(), TrayBlock.TE
 	)).blockstate((ctx, pvd) -> {
 		var base = pvd.models().getBuilder("block/tray")
 				.parent(new ModelFile.UncheckedModelFile(pvd.modLoc("custom/tray")));
 		var tray = pvd.models().getBuilder("block/tray_support")
 				.parent(new ModelFile.UncheckedModelFile(pvd.modLoc("custom/tray_support")));
-		pvd.horizontalBlock(ctx.get(), s -> s.getValue(TrayBlock.SUPPORT) ? tray : base);
+		pvd.horizontalBlock(ctx.get(), s -> s.getValue(TrayBlock.SUPPORT) ? tray : base, 90);
 	}).simpleItem().defaultLoot().tag(BlockTags.MINEABLE_WITH_AXE).register();
+
+
+	public static final BlockEntityEntry<TrayBlockEntity> TE_TRAY = BarbequesDelight.REGISTRATE
+			.blockEntity("tray", TrayBlockEntity::new).validBlock(TRAY)
+			.renderer(() -> StorageTileRenderer::new).register();
+
 
 	public static void register() {
 	}
