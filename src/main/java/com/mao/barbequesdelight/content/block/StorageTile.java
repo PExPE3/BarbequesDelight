@@ -1,6 +1,6 @@
 package com.mao.barbequesdelight.content.block;
 
-import dev.xkmc.l2library.base.tile.BaseContainerListener;
+import dev.xkmc.l2core.base.tile.BaseContainerListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ public interface StorageTile extends BlockSlot, BaseContainerListener {
 	default boolean insert(Level level, int i, ItemStack handStack, boolean all) {
 		if (handStack.isEmpty()) return false;
 		ItemStack basinStack = getStack(i);
-		if (!basinStack.isEmpty() && !ItemStack.isSameItemSameTags(basinStack, handStack)) return false;
+		if (!basinStack.isEmpty() && !ItemStack.isSameItemSameComponents(basinStack, handStack)) return false;
 		int old = basinStack.getCount();
 		int max = handStack.getMaxStackSize();
 		int split = all ? handStack.getCount() : 1;

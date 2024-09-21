@@ -3,20 +3,21 @@ package com.mao.barbequesdelight.content.block;
 import com.mao.barbequesdelight.init.data.BBQLangData;
 import com.mao.barbequesdelight.init.registrate.BBQDItems;
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
-import dev.xkmc.l2library.base.tile.BaseBlockEntity;
+import dev.xkmc.l2core.base.tile.BaseBlockEntity;
 import dev.xkmc.l2modularblock.tile_api.BlockContainer;
 import dev.xkmc.l2modularblock.tile_api.TickableBlockEntity;
-import dev.xkmc.l2serial.serialization.SerialClass;
+import dev.xkmc.l2serial.serialization.marker.SerialClass;
+import dev.xkmc.l2serial.serialization.marker.SerialField;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -36,12 +37,12 @@ public class GrillBlockEntity extends BaseBlockEntity
 	@SerialClass
 	public static class ItemEntry {
 
-		@SerialClass.SerialField(toClient = true)
+		@SerialField
 		public int time, duration;
-		@SerialClass.SerialField(toClient = true)
+		@SerialField
 		public boolean flipped, burnt;
 
-		@SerialClass.SerialField(toClient = true)
+		@SerialField
 		public ItemStack stack = ItemStack.EMPTY;
 
 		public void tick(GrillBlockEntity be, boolean heated) {
@@ -54,7 +55,6 @@ public class GrillBlockEntity extends BaseBlockEntity
 				}
 				return;
 			}
-			if (stack.isEmpty()) return;
 			time++;
 			if (time < duration) return;
 			if (time >= duration * 2) {
@@ -64,12 +64,12 @@ public class GrillBlockEntity extends BaseBlockEntity
 			}
 			if (!flipped) return;
 			if (time == duration && !be.level.isClientSide()) {
-				var cont = new SimpleContainer(stack);
+				var cont = new SingleRecipeInput(stack);
 				var opt = be.level.getRecipeManager().getRecipeFor(BBQDRecipes.RT_BBQ.get(), cont, be.level);
 				if (opt.isPresent()) {
-					CompoundTag tag = stack.getTag();
-					stack = opt.get().assemble(cont, be.level.registryAccess());
-					stack.setTag(tag);
+					var tag = stack.getComponentsPatch();
+					stack = opt.get().value().assemble(cont, be.level.registryAccess());
+					stack.applyComponents(tag);
 					be.inventoryChanged();
 				}
 			}
@@ -99,10 +99,10 @@ public class GrillBlockEntity extends BaseBlockEntity
 		public boolean addItem(GrillBlockEntity be, ItemStack stack) {
 			if (be.level == null) return false;
 			var opt = be.level.getRecipeManager()
-					.getRecipeFor(BBQDRecipes.RT_BBQ.get(), new SimpleContainer(stack), be.level);
+					.getRecipeFor(BBQDRecipes.RT_BBQ.get(), new SingleRecipeInput(stack), be.level);
 			if (opt.isEmpty()) return false;
 			if (!be.level.isClientSide) {
-				duration = opt.get().getBarbecuingTime();
+				duration = opt.get().value().getBarbecuingTime();
 				time = 0;
 				flipped = burnt = false;
 				this.stack = stack.copyWithCount(1);
@@ -133,7 +133,7 @@ public class GrillBlockEntity extends BaseBlockEntity
 		}
 	}
 
-	@SerialClass.SerialField(toClient = true)
+	@SerialField
 	public final ItemEntry[] entries = {new ItemEntry(), new ItemEntry()};
 
 	public GrillBlockEntity(BlockEntityType<? extends GrillBlockEntity> type, BlockPos pos, BlockState state) {

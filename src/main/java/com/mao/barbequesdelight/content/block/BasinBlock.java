@@ -1,7 +1,7 @@
 package com.mao.barbequesdelight.content.block;
 
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
-import dev.xkmc.l2modularblock.BlockProxy;
+import dev.xkmc.l2modularblock.core.BlockTemplates;
 import dev.xkmc.l2modularblock.impl.BlockEntityBlockMethodImpl;
 import dev.xkmc.l2modularblock.one.ShapeBlockMethod;
 import dev.xkmc.l2modularblock.type.BlockMethod;
@@ -39,7 +39,7 @@ public class BasinBlock implements ShapeBlockMethod {
 	@Nullable
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return state.getValue(BlockProxy.HORIZONTAL_FACING).getAxis() == Direction.Axis.X ? SHAPE_X : SHAPE_Z;
+		return state.getValue(BlockTemplates.HORIZONTAL_FACING).getAxis() == Direction.Axis.X ? SHAPE_X : SHAPE_Z;
 	}
 
 }

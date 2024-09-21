@@ -4,7 +4,7 @@ import com.mao.barbequesdelight.content.recipe.SimpleSkeweringRecipe;
 import com.mao.barbequesdelight.init.BarbequesDelight;
 import com.mao.barbequesdelight.init.data.BBQLangData;
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
-import dev.xkmc.l2library.serial.recipe.BaseRecipeCategory;
+import dev.xkmc.l2core.compat.jei.BaseRecipeCategory;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;

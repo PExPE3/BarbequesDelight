@@ -4,20 +4,20 @@ import com.mao.barbequesdelight.content.block.*;
 import com.mao.barbequesdelight.init.BarbequesDelight;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import dev.xkmc.l2modularblock.BlockProxy;
-import dev.xkmc.l2modularblock.DelegateBlock;
+import dev.xkmc.l2modularblock.core.BlockTemplates;
+import dev.xkmc.l2modularblock.core.DelegateBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 public class BBQDBlocks {
 
 	public static final BlockEntry<DelegateBlock> GRILL = BarbequesDelight.REGISTRATE.block("grill", p -> DelegateBlock.newBaseBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 6.0F).sound(SoundType.LANTERN),
-			BlockProxy.HORIZONTAL, new GrillBlock(), GrillBlock.TE
+			BlockTemplates.HORIZONTAL, new GrillBlock(), GrillBlock.TE
 	)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/grill")
 			.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/grill")))
 			.texture("side", pvd.modLoc("block/grill_side"))
@@ -31,8 +31,8 @@ public class BBQDBlocks {
 
 
 	public static final BlockEntry<DelegateBlock> BASIN = BarbequesDelight.REGISTRATE.block("basin", p -> DelegateBlock.newBaseBlock(
-					BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
-					BlockProxy.HORIZONTAL, ClickStorageMethod.INS, new BasinBlock(), BasinBlock.TE
+					BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS),
+					BlockTemplates.HORIZONTAL, ClickStorageMethod.INS, new BasinBlock(), BasinBlock.TE
 			)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/basin")
 					.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/basin")))
 					.renderType("cutout")
@@ -45,8 +45,8 @@ public class BBQDBlocks {
 
 
 	public static final BlockEntry<DelegateBlock> TRAY = BarbequesDelight.REGISTRATE.block("tray", p -> DelegateBlock.newBaseBlock(
-			BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
-			BlockProxy.HORIZONTAL, ClickStorageMethod.INS, new TrayBlock(), TrayBlock.TE
+			BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS),
+			BlockTemplates.HORIZONTAL, ClickStorageMethod.INS, new TrayBlock(), TrayBlock.TE
 	)).blockstate((ctx, pvd) -> {
 		var base = pvd.models().getBuilder("block/tray")
 				.parent(new ModelFile.UncheckedModelFile(pvd.modLoc("custom/tray")));

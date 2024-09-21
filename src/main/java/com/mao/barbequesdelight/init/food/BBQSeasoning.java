@@ -69,7 +69,7 @@ public enum BBQSeasoning implements ItemLike {
 	}
 
 	public void modify(FoodProperties.Builder builder) {
-		if (this == CHILI) builder.alwaysEat();
+		if (this == CHILI) builder.alwaysEdible();
 		if (this == PEPPER) builder.fast();
 	}
 

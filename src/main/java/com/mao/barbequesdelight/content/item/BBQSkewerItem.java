@@ -1,7 +1,7 @@
 package com.mao.barbequesdelight.content.item;
 
 import com.mao.barbequesdelight.init.food.BBQSeasoning;
-import net.minecraft.nbt.CompoundTag;
+import com.mao.barbequesdelight.init.registrate.BBQDItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,19 +15,9 @@ import java.util.List;
 
 public class BBQSkewerItem extends FoodItem {
 
-	public static final String KEY = "seasoning";
-
 	@Nullable
 	public static BBQSeasoning getSeasoning(ItemStack stack) {
-		CompoundTag nbt = stack.getTag();
-		if (nbt != null && !nbt.getString(KEY).isEmpty()) {
-			String str = nbt.getString(KEY);
-			try {
-				return Enum.valueOf(BBQSeasoning.class, str);
-			} catch (Exception ignored) {
-			}
-		}
-		return null;
+		return BBQDItems.SEASONING.get(stack);
 	}
 
 	public BBQSkewerItem(Properties prop) {
@@ -45,19 +35,17 @@ public class BBQSkewerItem extends FoodItem {
 	@Override
 	public @Nullable FoodProperties getFoodProperties(ItemStack stack, @Nullable LivingEntity entity) {
 		var ans = super.getFoodProperties(stack, entity);
-		CompoundTag nbt = stack.getTag();
-		if (ans == null || nbt == null) return ans;
+		if (ans == null || stack.isComponentsPatchEmpty()) return ans;
 		BBQSeasoning seasoning = getSeasoning(stack);
 		if (seasoning == null) return ans;
 		FoodProperties.Builder builder = new FoodProperties.Builder()
-				.nutrition(ans.getNutrition())
-				.saturationMod(ans.getSaturationModifier());
-		for (var e : ans.getEffects()) {
-			seasoning.appendEffect(builder, e.getFirst(), e.getSecond());
+				.nutrition(ans.nutrition())
+				.saturationModifier(ans.saturation());
+		for (var e : ans.effects()) {
+			seasoning.appendEffect(builder, e.effect(), e.probability());
 		}
-		if (ans.isFastFood()) builder.fast();
-		if (ans.canAlwaysEat()) builder.alwaysEat();
-		if (ans.isMeat()) builder.meat();
+		if (ans.eatDurationTicks() < 20) builder.fast();
+		if (ans.canAlwaysEat()) builder.alwaysEdible();
 		seasoning.modify(builder);
 		return builder.build();
 	}
@@ -87,7 +75,7 @@ public class BBQSkewerItem extends FoodItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext level, List<Component> list, TooltipFlag flag) {
 		BBQSeasoning seasoning = getSeasoning(stack);
 		if (seasoning != null)
 			list.add(seasoning.getTitle());

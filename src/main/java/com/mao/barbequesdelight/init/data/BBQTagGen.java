@@ -16,7 +16,7 @@ public class BBQTagGen {
 	public static final TagKey<Item> RAW_SKEWERS = ItemTags.create(BarbequesDelight.loc("raw_skewers"));
 
 	public static void onBlockTagGen(RegistrateTagsProvider.IntrinsicImpl<Block> pvd) {
-		pvd.addTag(BlockTags.create(new ResourceLocation("carryon", "block_blacklist")))
+		pvd.addTag(BlockTags.create(ResourceLocation.fromNamespaceAndPath("carryon", "block_blacklist")))
 				.add(BBQDBlocks.GRILL.get(), BBQDBlocks.BASIN.get());
 	}
 

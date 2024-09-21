@@ -1,15 +1,14 @@
 package com.mao.barbequesdelight.content.recipe;
 
-import dev.xkmc.l2library.serial.recipe.BaseRecipe;
-import dev.xkmc.l2serial.serialization.SerialClass;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.SimpleContainer;
+import dev.xkmc.l2core.serial.recipe.BaseRecipe;
+import dev.xkmc.l2serial.serialization.marker.SerialClass;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 @SerialClass
-public abstract class GrillingRecipe<T extends GrillingRecipe<T>> extends BaseRecipe<T, GrillingRecipe<?>, SimpleContainer> {
+public abstract class GrillingRecipe<T extends GrillingRecipe<T>> extends BaseRecipe<T, GrillingRecipe<?>, SingleRecipeInput> {
 
-	public GrillingRecipe(ResourceLocation id, RecType<T, GrillingRecipe<?>, SimpleContainer> fac) {
-		super(id, fac);
+	public GrillingRecipe(RecType<T, GrillingRecipe<?>, SingleRecipeInput> fac) {
+		super(fac);
 	}
 
 	public abstract int getBarbecuingTime();

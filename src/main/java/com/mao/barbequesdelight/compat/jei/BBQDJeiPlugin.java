@@ -5,13 +5,13 @@ import com.mao.barbequesdelight.content.recipe.SimpleSkeweringRecipe;
 import com.mao.barbequesdelight.init.BarbequesDelight;
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
-import dev.xkmc.l2library.util.Proxy;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 
@@ -39,12 +39,12 @@ public class BBQDJeiPlugin implements IModPlugin {
 	}
 
 	public void registerRecipes(IRecipeRegistration registration) {
-		ClientLevel level = Proxy.getClientWorld();
+		ClientLevel level = Minecraft.getInstance().level;
 		assert level != null;
 		registration.addRecipes(GRILL.getRecipeType(), level.getRecipeManager().getAllRecipesFor(BBQDRecipes.RT_BBQ.get())
-				.stream().map(e -> e instanceof SimpleGrillingRecipe b ? b : null).filter(Objects::nonNull).toList());
+				.stream().map(e -> e.value() instanceof SimpleGrillingRecipe b ? b : null).filter(Objects::nonNull).toList());
 		registration.addRecipes(BASIN.getRecipeType(), level.getRecipeManager().getAllRecipesFor(BBQDRecipes.RT_SKR.get())
-				.stream().map(e -> e instanceof SimpleSkeweringRecipe b ? b : null).filter(Objects::nonNull).toList());
+				.stream().map(e -> e.value() instanceof SimpleSkeweringRecipe b ? b : null).filter(Objects::nonNull).toList());
 	}
 
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {

@@ -1,7 +1,7 @@
 package com.mao.barbequesdelight.content.item;
 
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import com.mao.barbequesdelight.init.registrate.BBQDItems;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,16 +20,8 @@ public class BBQSandwichItem extends FoodItem {
 
 	public static final String KEY = "Skewers";
 
-	public static List<ItemStack> getSkewers(ItemStack stack) {
-		var tag = stack.getTag();
-		if (tag == null) return List.of();
-		if (!tag.contains(KEY, Tag.TAG_LIST)) return List.of();
-		List<ItemStack> ans = new ArrayList<>();
-		ListTag list = tag.getList(KEY, Tag.TAG_COMPOUND);
-		for (int i = 0; i < list.size(); i++) {
-			ans.add(ItemStack.of(list.getCompound(i)));
-		}
-		return ans;
+	public static DCListStack getSkewers(ItemStack stack) {
+		return BBQDItems.CONTENTS.getOrDefault(stack, DCListStack.EMPTY);
 	}
 
 	public BBQSandwichItem(Properties properties) {
@@ -40,30 +32,28 @@ public class BBQSandwichItem extends FoodItem {
 	public @Nullable FoodProperties getFoodProperties(ItemStack stack, @Nullable LivingEntity entity) {
 		var skewers = getSkewers(stack);
 		FoodProperties old = super.getFoodProperties(stack, entity);
-		if (old == null || skewers.isEmpty()) return old;
+		if (old == null || skewers.stack().isEmpty()) return old;
 		FoodProperties.Builder builder = new FoodProperties.Builder();
-		builder.nutrition(old.getNutrition());
-		builder.saturationMod(old.getSaturationModifier());
-		if (old.isMeat()) builder.meat();
-		if (old.isFastFood()) builder.fast();
-		if (old.canAlwaysEat()) builder.alwaysEat();
-		Set<MobEffect> set = new HashSet<>();
+		builder.nutrition(old.nutrition());
+		builder.saturationModifier(old.saturation());
+		if (old.eatDurationTicks() < 20) builder.fast();
+		if (old.canAlwaysEat()) builder.alwaysEdible();
+		Set<Holder<MobEffect>> set = new HashSet<>();
 		var list = new ArrayList<ItemStack>();
 		list.add(getDefaultInstance());
-		list.addAll(skewers);
+		list.addAll(skewers.stack());
 		for (var e : list) {
 			FoodProperties x = e.getFoodProperties(entity);
 			if (x == null) continue;
-			for (var eff : x.getEffects()) {
-				var ins = eff.getFirst();
+			for (var eff : x.effects()) {
+				var ins = eff.effect();
 				if (set.contains(ins.getEffect()))
 					continue;
-				set.add(eff.getFirst().getEffect());
-				builder.effect(eff::getFirst, eff.getSecond());
+				set.add(eff.effect().getEffect());
+				builder.effect(eff::effect, eff.probability());
 			}
-			if (x.isMeat()) builder.meat();
-			if (x.isFastFood()) builder.fast();
-			if (x.canAlwaysEat()) builder.alwaysEat();
+			if (x.eatDurationTicks() < 20) builder.fast();
+			if (x.canAlwaysEat()) builder.alwaysEdible();
 		}
 		return builder.build();
 	}
@@ -71,7 +61,7 @@ public class BBQSandwichItem extends FoodItem {
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		var skewers = getSkewers(stack);
-		for (var e : skewers) {
+		for (var e : skewers.stack()) {
 			if (e.getItem() instanceof BBQSkewerItem item) {
 				item.applyEffects(e, entity);
 			}
@@ -80,9 +70,9 @@ public class BBQSandwichItem extends FoodItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext level, List<Component> list, TooltipFlag flag) {
 		var skewers = getSkewers(stack);
-		for (var e : skewers) {
+		for (var e : skewers.stack()) {
 			list.add(e.getHoverName());
 		}
 		super.appendHoverText(stack, level, list, flag);

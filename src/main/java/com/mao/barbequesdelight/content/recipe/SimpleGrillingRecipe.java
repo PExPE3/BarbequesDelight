@@ -1,26 +1,26 @@
 package com.mao.barbequesdelight.content.recipe;
 
 import com.mao.barbequesdelight.init.registrate.BBQDRecipes;
-import dev.xkmc.l2serial.serialization.SerialClass;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.SimpleContainer;
+import dev.xkmc.l2serial.serialization.marker.SerialClass;
+import dev.xkmc.l2serial.serialization.marker.SerialField;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
 @SerialClass
 public class SimpleGrillingRecipe extends GrillingRecipe<SimpleGrillingRecipe> {
 
-	@SerialClass.SerialField
+	@SerialField
 	public Ingredient ingredient;
-	@SerialClass.SerialField
+	@SerialField
 	public ItemStack output;
-	@SerialClass.SerialField
+	@SerialField
 	public int barbecuingTime;
 
-	public SimpleGrillingRecipe(ResourceLocation id) {
-		super(id, BBQDRecipes.RS_BBQ.get());
+	public SimpleGrillingRecipe() {
+		super(BBQDRecipes.RS_BBQ.get());
 	}
 
 	@Override
@@ -29,17 +29,17 @@ public class SimpleGrillingRecipe extends GrillingRecipe<SimpleGrillingRecipe> {
 	}
 
 	@Override
-	public boolean matches(SimpleContainer cont, Level level) {
-		return cont.getContainerSize() == 1 && ingredient.test(cont.getItem(0));
+	public boolean matches(SingleRecipeInput cont, Level level) {
+		return ingredient.test(cont.getItem(0));
 	}
 
 	@Override
-	public ItemStack assemble(SimpleContainer cont, RegistryAccess level) {
+	public ItemStack assemble(SingleRecipeInput cont, HolderLookup.Provider level) {
 		return output.copy();
 	}
 
 	@Override
-	public ItemStack getResultItem(RegistryAccess level) {
+	public ItemStack getResultItem(HolderLookup.Provider level) {
 		return output;
 	}
 

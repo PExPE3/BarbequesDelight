@@ -3,16 +3,15 @@
 - Add bibimbap and vegetable skewers
 - Add Tray TODO survive check
 
-1.0.3
-- Add beef and mushroom skewers
-- Reduce second step required cooking time
-- Add Jade support
+1.2.1+1
+- Fix fruit tags
 
-1.0.2
-- Return sticks when consuming skewers
+1.2.1
+- Add Thirst Compat
+- Add cauldron registration
+- Use common tag names
 
-1.0.1
-- Fix seasoning name display
-- Fix Carry On compatibility
-- Allow sandwich and wraps to carry over food effects
-- Change sandwich recipe a little bit
+1.2.0
+- Improve Fig Pudding collision shape
+- Rename jelly to jam for ids
+- Port to 1.21

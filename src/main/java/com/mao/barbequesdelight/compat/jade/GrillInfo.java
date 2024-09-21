@@ -11,7 +11,7 @@ import snownee.jade.api.ui.IElementHelper;
 
 public class GrillInfo implements IBlockComponentProvider {
 
-	public static final ResourceLocation ID = new ResourceLocation(BarbequesDelight.MODID, "grill");
+	public static final ResourceLocation ID = BarbequesDelight.loc("grill");
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig config) {
@@ -30,4 +30,5 @@ public class GrillInfo implements IBlockComponentProvider {
 	public ResourceLocation getUid() {
 		return ID;
 	}
+	
 }

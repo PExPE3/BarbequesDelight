@@ -4,7 +4,8 @@ import com.mao.barbequesdelight.content.item.SeasoningItem;
 import com.mao.barbequesdelight.init.registrate.BBQDBlocks;
 import dev.xkmc.l2modularblock.impl.BlockEntityBlockMethodImpl;
 import dev.xkmc.l2modularblock.mult.AnimateTickBlockMethod;
-import dev.xkmc.l2modularblock.mult.OnClickBlockMethod;
+import dev.xkmc.l2modularblock.mult.UseItemOnBlockMethod;
+import dev.xkmc.l2modularblock.mult.UseWithoutItemBlockMethod;
 import dev.xkmc.l2modularblock.one.ShapeBlockMethod;
 import dev.xkmc.l2modularblock.type.BlockMethod;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -24,7 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 
-public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, OnClickBlockMethod {
+public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, UseWithoutItemBlockMethod, UseItemOnBlockMethod {
 
 	public static final BlockMethod TE = new BlockEntityBlockMethodImpl<>(BBQDBlocks.TE_GRILL, GrillBlockEntity.class);
 
@@ -62,27 +64,38 @@ public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, OnC
 	}
 
 	@Override
-	public InteractionResult onClick(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!(level.getBlockEntity(pos) instanceof GrillBlockEntity grill)) {
+			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		}
+		int i = grill.getSlotForHitting(hit, level);
+		if (i < 0 || i >= grill.size()) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		ItemStack item = grill.getStack(i);
+		if (stack.isEmpty()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		if (item.isEmpty()) {
+			return grill.addItem(i, stack) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.FAIL;
+		} else if (stack.getItem() instanceof SeasoningItem seasoning && seasoning.canSprinkle(item)) {
+			seasoning.sprinkle(stack, hit.getLocation(), item, player, hand);
+			return ItemInteractionResult.SUCCESS;
+		}
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!(level.getBlockEntity(pos) instanceof GrillBlockEntity grill)) {
 			return InteractionResult.PASS;
 		}
 		int i = grill.getSlotForHitting(hit, level);
-		ItemStack stack = player.getItemInHand(hand);
 		if (i < 0 || i >= grill.size()) return InteractionResult.PASS;
 		ItemStack item = grill.getStack(i);
-		if (item.isEmpty()) {
-			if (stack.isEmpty()) return InteractionResult.PASS;
-			return grill.addItem(i, stack) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-		} else if (player.isShiftKeyDown()) {
+		if (player.isShiftKeyDown()) {
 			return grill.flip(i) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-		} else if (stack.getItem() instanceof SeasoningItem seasoning && seasoning.canSprinkle(item)) {
-			seasoning.sprinkle(stack, hit.getLocation(), item, player, hand);
-			return InteractionResult.SUCCESS;
 		} else {
 			if (!level.isClientSide()) {
 				ItemStack ret = item.split(1);
-				if (player.getItemInHand(hand).isEmpty()) {
-					player.setItemInHand(hand, ret);
+				if (player.getMainHandItem().isEmpty()) {
+					player.setItemInHand(InteractionHand.MAIN_HAND, ret);
 				} else player.getInventory().placeItemBackInInventory(ret);
 				grill.inventoryChanged();
 			}
