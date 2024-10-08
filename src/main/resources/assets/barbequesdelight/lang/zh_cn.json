@@ -57,5 +57,6 @@
   "item.barbequesdelight.buffalo_sauce": "布法罗酱",
   "item.barbequesdelight.grilled_vegetable_skewer": "烤果蔬串",
   "item.barbequesdelight.honey_mustard_sauce": "蜂蜜芥末酱",
-  "item.barbequesdelight.raw_vegetable_skewer": "生果蔬串"
+  "item.barbequesdelight.raw_vegetable_skewer": "生果蔬串",
+  "barbequesdelight.info.flip": "潜行右键翻面烤串"
 }

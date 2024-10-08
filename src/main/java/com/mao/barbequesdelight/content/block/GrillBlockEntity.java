@@ -76,7 +76,7 @@ public class GrillBlockEntity extends BaseBlockEntity
 		}
 
 		public boolean canFlip() {
-			return !flipped && !burnt && time >= duration / 2;
+			return !stack.isEmpty() && !flipped && !burnt && time >= duration / 2;
 		}
 
 		public boolean smoking() {
@@ -173,6 +173,11 @@ public class GrillBlockEntity extends BaseBlockEntity
 		}
 	}
 
+	public boolean canFlip(int i) {
+		if (i < 0 || i >= size()) return false;
+		return entries[i].canFlip();
+	}
+
 	public boolean flip(int i) {
 		if (i < 0 || i >= size()) return false;
 		return entries[i].flip(this);
@@ -184,7 +189,8 @@ public class GrillBlockEntity extends BaseBlockEntity
 	}
 
 	public boolean isHeated() {
-		return level != null && this.isHeated(level, getBlockPos());
+		return getBlockState().getValue(GrillPlace.CAMPFIRE) ||
+				level != null && this.isHeated(level, getBlockPos());
 	}
 
 	public boolean isBarbecuing() {

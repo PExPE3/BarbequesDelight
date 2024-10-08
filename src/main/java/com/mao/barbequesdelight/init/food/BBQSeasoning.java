@@ -35,7 +35,7 @@ public enum BBQSeasoning implements ItemLike {
 		this.color = color;
 		name = name().toLowerCase(Locale.ROOT);
 		item = BarbequesDelight.REGISTRATE.item(name + (powder ? "_powder" : "_sauce"),
-						p -> new SeasoningItem(p.durability(64), this))
+						p -> new SeasoningItem(p.durability(powder ? 64 : 16), this))
 				.register();
 	}
 

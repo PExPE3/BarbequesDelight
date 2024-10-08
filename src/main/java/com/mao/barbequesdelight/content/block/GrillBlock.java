@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -31,17 +32,8 @@ public class GrillBlock implements ShapeBlockMethod, AnimateTickBlockMethod, Use
 	public static final BlockMethod TE = new BlockEntityBlockMethodImpl<>(BBQDBlocks.TE_GRILL, GrillBlockEntity.class);
 
 	public static final VoxelShape OUTER = Block.box(1, 12, 1, 15, 15, 15);
-	public static final VoxelShape SHAPE = Shapes.or(
-			Block.box(15, 0, 0, 16, 10, 1),
-			Block.box(15, 0, 15, 16, 10, 16),
-			Block.box(0, 0, 15, 1, 10, 16),
-			Block.box(0, 0, 0, 1, 10, 1),
-			Block.box(0, 10, 15, 16, 16, 16),
-			Block.box(0, 10, 0, 16, 16, 1),
-			Block.box(0, 10, 1, 1, 16, 15),
-			Block.box(15, 10, 1, 16, 16, 15),
-			Block.box(1, 12, 1, 15, 15, 15)
-	);
+	public static final VoxelShape SHAPE = Shapes.join(Shapes.block(),
+			Block.box(1, 15, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
