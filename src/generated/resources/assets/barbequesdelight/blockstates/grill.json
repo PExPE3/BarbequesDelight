@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,has_campfire=false": {
       "model": "barbequesdelight:block/grill",
       "y": 90
     },
-    "facing=north": {
+    "facing=east,has_campfire=true": {
+      "model": "barbequesdelight:block/grill_with_campfire",
+      "y": 90
+    },
+    "facing=north,has_campfire=false": {
       "model": "barbequesdelight:block/grill"
     },
-    "facing=south": {
+    "facing=north,has_campfire=true": {
+      "model": "barbequesdelight:block/grill_with_campfire"
+    },
+    "facing=south,has_campfire=false": {
       "model": "barbequesdelight:block/grill",
       "y": 180
     },
-    "facing=west": {
+    "facing=south,has_campfire=true": {
+      "model": "barbequesdelight:block/grill_with_campfire",
+      "y": 180
+    },
+    "facing=west,has_campfire=false": {
       "model": "barbequesdelight:block/grill",
+      "y": 270
+    },
+    "facing=west,has_campfire=true": {
+      "model": "barbequesdelight:block/grill_with_campfire",
       "y": 270
     }
   }

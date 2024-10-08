@@ -1,7 +1,9 @@
 1.0.4
 - Add 3 more seasonings
 - Add bibimbap and vegetable skewers
-- Add Tray TODO survive check
+- Add Tray
+- Add flip hint
+- Add Campfire Grill
 
 1.0.3
 - Add beef and mushroom skewers

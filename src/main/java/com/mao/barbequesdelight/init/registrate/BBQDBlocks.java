@@ -15,15 +15,12 @@ import net.minecraftforge.client.model.generators.ModelFile;
 
 public class BBQDBlocks {
 
-	public static final BlockEntry<DelegateBlock> GRILL = BarbequesDelight.REGISTRATE.block("grill", p -> DelegateBlock.newBaseBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 6.0F).sound(SoundType.LANTERN),
-			BlockProxy.HORIZONTAL, new GrillBlock(), GrillBlock.TE
-	)).blockstate((ctx, pvd) -> pvd.horizontalBlock(ctx.get(), pvd.models().getBuilder("block/grill")
-			.parent(new ModelFile.UncheckedModelFile(BarbequesDelight.loc("custom/grill")))
-			.texture("side", pvd.modLoc("block/grill_side"))
-			.texture("top", pvd.modLoc("block/grill_top"))
-			.renderType("cutout")
-	)).simpleItem().defaultLoot().tag(BlockTags.MINEABLE_WITH_PICKAXE).register();
+	public static final BlockEntry<DelegateBlock> GRILL = BarbequesDelight.REGISTRATE.block("grill", p ->
+					DelegateBlock.newBaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
+									.strength(0.5F, 6.0F).sound(SoundType.LANTERN).noOcclusion(),
+							BlockProxy.HORIZONTAL, new GrillPlace(), new GrillBlock(), GrillBlock.TE
+					)).blockstate(GrillPlace::buildModel).item(GrillBlockItem::new).build()
+			.loot(GrillPlace::buildLoot).tag(BlockTags.MINEABLE_WITH_PICKAXE).register();
 
 	public static final BlockEntityEntry<GrillBlockEntity> TE_GRILL = BarbequesDelight.REGISTRATE
 			.blockEntity("grill", GrillBlockEntity::new).validBlock(GRILL)
