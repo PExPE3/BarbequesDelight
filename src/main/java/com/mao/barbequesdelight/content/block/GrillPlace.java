@@ -4,18 +4,18 @@ import com.mao.barbequesdelight.init.BarbequesDelight;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
-import dev.xkmc.l2modularblock.DelegateBlock;
+import dev.xkmc.l2modularblock.core.DelegateBlock;
 import dev.xkmc.l2modularblock.mult.CreateBlockStateBlockMethod;
 import dev.xkmc.l2modularblock.mult.DefaultStateBlockMethod;
-import dev.xkmc.l2modularblock.mult.OnClickBlockMethod;
 import dev.xkmc.l2modularblock.mult.PlacementBlockMethod;
+import dev.xkmc.l2modularblock.mult.UseItemOnBlockMethod;
 import dev.xkmc.l2modularblock.one.LightBlockMethod;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,12 +33,12 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 
 public class GrillPlace implements CreateBlockStateBlockMethod, PlacementBlockMethod, DefaultStateBlockMethod,
-		OnClickBlockMethod, LightBlockMethod {
+		UseItemOnBlockMethod, LightBlockMethod {
 
 	public static final BooleanProperty CAMPFIRE = BooleanProperty.create("has_campfire");
 
@@ -69,8 +69,7 @@ public class GrillPlace implements CreateBlockStateBlockMethod, PlacementBlockMe
 	}
 
 	@Override
-	public InteractionResult onClick(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(hand);
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!state.getValue(CAMPFIRE) && stack.is(Items.CAMPFIRE) && hit.getDirection().getAxis() != Direction.Axis.Y) {
 			if (!level.isClientSide()) {
 				level.setBlockAndUpdate(pos, state.setValue(CAMPFIRE, true));
@@ -78,9 +77,9 @@ public class GrillPlace implements CreateBlockStateBlockMethod, PlacementBlockMe
 					stack.shrink(1);
 				}
 			}
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
-		return InteractionResult.PASS;
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	public static void buildLoot(RegistrateBlockLootTables pvd, DelegateBlock block) {
@@ -99,7 +98,7 @@ public class GrillPlace implements CreateBlockStateBlockMethod, PlacementBlockMe
 				.texture("side", pvd.modLoc("block/grill_side"))
 				.texture("top", pvd.modLoc("block/grill_top"))
 				.renderType("cutout");
-		var camp = pvd.models().getExistingFile(new ResourceLocation("block/campfire"));
+		var camp = pvd.models().getExistingFile(ResourceLocation.withDefaultNamespace("block/campfire"));
 		var grillRef = new ModelFile.UncheckedModelFile(BarbequesDelight.loc("block/grill"));
 		var composite = pvd.models().getBuilder("block/grill_with_campfire")
 				.customLoader(CompositeModelBuilder::begin)

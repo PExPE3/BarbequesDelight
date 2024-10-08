@@ -18,7 +18,7 @@ public class BBQDBlocks {
 	public static final BlockEntry<DelegateBlock> GRILL = BarbequesDelight.REGISTRATE.block("grill", p ->
 					DelegateBlock.newBaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL)
 									.strength(0.5F, 6.0F).sound(SoundType.LANTERN).noOcclusion(),
-							BlockProxy.HORIZONTAL, new GrillPlace(), new GrillBlock(), GrillBlock.TE
+							BlockTemplates.HORIZONTAL, new GrillPlace(), new GrillBlock(), GrillBlock.TE
 					)).blockstate(GrillPlace::buildModel).item(GrillBlockItem::new).build()
 			.loot(GrillPlace::buildLoot).tag(BlockTags.MINEABLE_WITH_PICKAXE).register();
 
