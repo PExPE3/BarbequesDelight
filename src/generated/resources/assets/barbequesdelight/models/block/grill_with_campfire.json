@@ -13,7 +13,7 @@
     "campfire",
     "grill"
   ],
-  "loader": "forge:composite",
+  "loader": "neoforge:composite",
   "textures": {
     "particle": "barbequesdelight:block/grill_side"
   }
