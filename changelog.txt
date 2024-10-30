@@ -1,3 +1,6 @@
+1.0.5
+- Fix vegetable skewer
+
 1.0.4
 - Add 3 more seasonings
 - Add bibimbap and vegetable skewers

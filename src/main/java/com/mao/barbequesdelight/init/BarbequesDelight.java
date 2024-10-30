@@ -43,6 +43,7 @@ public class BarbequesDelight {
 
 		REGISTRATE.addDataGenerator(ProviderType.LANG, BBQLangData::genLang);
 		REGISTRATE.addDataGenerator(ProviderType.RECIPE, BBQRecipeGen::genRecipe);
+		REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, BBQTagGen::onItemTagGen);
 		REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, BBQTagGen::onBlockTagGen);
 	}
 
