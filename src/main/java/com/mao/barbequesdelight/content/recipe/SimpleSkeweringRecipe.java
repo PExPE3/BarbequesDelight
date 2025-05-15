@@ -25,17 +25,17 @@ public class SimpleSkeweringRecipe extends SkeweringRecipe<SimpleSkeweringRecipe
 	@Override
 	public boolean matches(SkeweringInput cont, Level level) {
 		return tool.test(cont.stick()) &&
-				ingredient.test(cont.ingredient()) &&
-				cont.ingredient().getCount() >= ingredientCount &&
-				side.test(cont.side()) &&
-				cont.side().getCount() >= sideCount;
+				ingredient.test(cont.ingredient()) && cont.ingredient().getCount() >= ingredientCount &&
+				(sideCount == 0 || side.test(cont.side()) && cont.side().getCount() >= sideCount);
 	}
 
 	@Override
 	public ItemStack assemble(SkeweringInput cont, HolderLookup.Provider level) {
 		cont.stick().shrink(1);
 		cont.ingredient().shrink(ingredientCount);
-		cont.side().shrink(sideCount);
+		if (sideCount > 0) {
+			cont.side().shrink(sideCount);
+		}
 		return output.copy();
 	}
 

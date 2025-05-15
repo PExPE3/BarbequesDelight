@@ -1,3 +1,6 @@
+1.2.1
+- Allow having something in offhand while doing 1-ingredient skewering
+
 1.2.0+3
 - Fix vegetable skewer recipe
 
